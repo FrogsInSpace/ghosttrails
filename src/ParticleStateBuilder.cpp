@@ -3,7 +3,7 @@
 #include <map>
 #include <vector>
 
-#ifdef MAX2012
+#if MAX_RELEASE >= MAX_RELEASE_R14
 #include "maxscript/foundation/numbers.h"
 #include "maxscript/maxscript.h"
 #include "maxscript/maxwrapper/mxsobjects.h"
@@ -15,7 +15,7 @@
 #include "maxscrpt/maxscrpt.h"
 #endif
 
-#ifdef MAX6
+#if MAX_RELEASE >= 6000
 #include "IParticleObjectExt.h"
 #include "ParticleFlow/IPFSystem.h"
 #include "ParticleFlow/IParticleChannelMaterialIndex.h"
@@ -45,7 +45,7 @@ const int ParticleStateBuilder::AGE_NO_PARTICLE = INT_MAX;
 
 bool ParticleStateBuilder::isParticleFlowNode(INode* node) {
   LOGIT;
-#ifdef MAX6
+#if MAX_RELEASE >= 6000
   // Are we a Particle Flow object?
   IParticleObjectExt* pIParticle =
       (IParticleObjectExt*)GetParticleObjectExtInterface(node->GetObjectRef());
@@ -103,7 +103,7 @@ int ParticleStateBuilder::buildParticleFlowState(
     ParticleSystemState& state, INode* pParticleSystem, TimeValue startTime,
     TimeValue endTime, TimeValue stepTime, IProgress* pProgress,
     Tab<INode*>* pfEventList) {
-#ifdef MAX6
+#if MAX_RELEASE >= 6000
   //
   // Some Notes
   //
@@ -298,7 +298,7 @@ int ParticleStateBuilder::buildParticleFlowState(
   state.calculateMaximumParticleAge();
   LOGIT;
 
-#endif  // ifdef MAX6
+#endif  // #if MAX_RELEASE >= 6000
 
   return PSB_OK;
 }
@@ -508,7 +508,7 @@ int ParticleStateBuilder::buildParticleSystemState(
   }
 
   LOGIT;
-#ifndef MAX2017
+#if MAX_RELEASE < MAX_RELEASE_R19
   pop_value_locals();
 #endif
   LOGIT;

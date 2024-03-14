@@ -19,7 +19,7 @@ INode *MaxUtils::FindNodeReference(ReferenceTarget *reference_target) {
   DependentIterator di(reference_target);
   ReferenceMaker *reference_maker;
   INode *node = NULL;
-  while (reference_maker = di.Next()) {
+  while ( NULL != (reference_maker = di.Next())) {
     node = GetNodeReference(reference_maker);
     if (node) return node;
   }
@@ -34,7 +34,7 @@ INode *MaxUtils::FindNodeReference(ReferenceTarget *modifier,
                                    ModContext *mod_context) {
   DependentIterator di(modifier);
   ReferenceMaker *reference_maker;
-  while (reference_maker = di.Next()) {
+  while ( NULL != (reference_maker = di.Next())) {
     if (reference_maker->SuperClassID() == BASENODE_CLASS_ID) {
       INode *node = (INode *)reference_maker;
       Object *object = node->GetObjectRef();

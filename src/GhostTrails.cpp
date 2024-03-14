@@ -1,4 +1,4 @@
-/**********************************************************************
+﻿/**********************************************************************
  *<
         FILE: GhostTrails.cpp
 
@@ -75,7 +75,7 @@ class GhostTrailsClassDesc : public ClassDesc2 {
     return new GhostTrails();
   }
   const TCHAR* ClassName() { return GetString(IDS_CLASS_NAME); }
-#ifdef MAX2022
+#if MAX_RELEASE >= MAX_RELEASE_R24
   const TCHAR* NonLocalizedClassName() { return _T("GhostTrails"); }
 #endif
   SClass_ID SuperClassID() { return OSM_CLASS_ID; }
@@ -119,7 +119,7 @@ static ParticlePickerPBValidator particleValidator;
 
 // ----------------------------------------------------------------------------
 
-#ifndef MAX2013
+#if MAX_RELEASE < MAX_RELEASE_R15
 #define p_end end
 #endif
 
@@ -1226,7 +1226,8 @@ void GhostTrails::calculateTrailTimes(GTWorkingValues& wv) {
   if (!wv.bIsPathAnchored) {
     // Calculate times for normal trails.
 
-    BOOL bRes = gGetStartAndEndTimes(pblock, GetCOREInterface()->GetAnimRange(),
+
+    BOOL bRes = gGetStartAndEndTimes(pblock, (Interval &)GetCOREInterface()->GetAnimRange(),
                                      &wv.ticksStartTime, &wv.ticksEndTime, NULL,
                                      NULL, inRenderMode);
 
@@ -1250,7 +1251,7 @@ void GhostTrails::calculateTrailTimes(GTWorkingValues& wv) {
       pblock->GetValue(pb_segsperframe, 0, fLevelsPerFrame, FOREVER);
 
 // b) get numFrames  - it *could* be animated
-#ifdef MAX2012
+#if MAX_RELEASE >= MAX_RELEASE_R14
     if (pblock->GetControllerByID(pb_frames))  // does it have a controller
     {
       BOOL retVal = pblock->GetValue(pb_frames, wv.t, numFrames, FOREVER);
@@ -1311,7 +1312,7 @@ void GhostTrails::calculateTrailTimes(GTWorkingValues& wv) {
     double fTicksPerLevel = 1.0;
 
     BOOL bRes1 = gGetStartAndEndTimes(
-        pblock, GetCOREInterface()->GetAnimRange(), &wv.ticksStartTime, NULL,
+        pblock, (Interval &)GetCOREInterface()->GetAnimRange(), &wv.ticksStartTime, NULL,
         &wv.fLevelsIfShowAll, NULL, inRenderMode);
     Interval curTime(wv.ticksStartTime, wv.t);
     BOOL bRes2 = gGetStartAndEndTimes(pblock, curTime, &wv.ticksStartTime,
@@ -1404,7 +1405,7 @@ void GhostTrails::buildMeshUVAgeVertices(GTWorkingValues& wv) {
     {
       for (int uu = 0; uu < wv.levelTVerts; uu++)  // for each spline step...
       {
-        UVVert uv;
+        UVVert uv; 
 
         if (wv.levelTVerts > 1) {
           uv.x = wv.fURepeat * (float)uu / (float)(wv.levelTVerts - 1);
@@ -1800,7 +1801,7 @@ void GhostTrails::EndEditParams(IObjParam* ip, ULONG flags, Animatable* next) {
 // ----------------------------------------------------------------------------
 
 // From ReferenceMaker
-#ifdef MAX2015
+#if MAX_RELEASE >= MAX_RELEASE_R17
 RefResult GhostTrails::NotifyRefChanged(const Interval& changeInt,
                                         RefTargetHandle hTarget, PartID& partID,
                                         RefMessage message, BOOL propagate)
@@ -1905,8 +1906,8 @@ IOResult GhostTrails::Save(ISave* isave) {
 
 // ----------------------------------------------------------------------------
 
-#ifdef MAX2013
-#ifdef MAX2022
+#if MAX_RELEASE >= MAX_RELEASE_R15
+#if MAX_RELEASE >= MAX_RELEASE_R24
 const TCHAR* GhostTrails::GetObjectName(bool isLocalized) const
 #else
 const MCHAR* GhostTrails::GetObjectName()
@@ -1951,7 +1952,7 @@ SClass_ID GhostTrails::SuperClassID() { return OSM_CLASS_ID; }
 
 // ----------------------------------------------------------------------------
 
-#ifdef MAX2022
+#if MAX_RELEASE >= MAX_RELEASE_R24
 void GhostTrails::GetClassName(MSTR& s, bool localized) const { s = localized ? GetString(IDS_CLASS_NAME) : _T("GhostTrails"); }
 
 #else
@@ -1964,7 +1965,7 @@ int GhostTrails::NumSubs() { return 1; }
 
 // ----------------------------------------------------------------------------
 
-#ifdef MAX2022
+#if MAX_RELEASE >= MAX_RELEASE_R24
 TSTR GhostTrails::SubAnimName(int i, BOOL isLocalized) { return GetString(IDS_PARAMS1); }
 #else
 TSTR GhostTrails::SubAnimName(int i) { return GetString(IDS_PARAMS1); }
@@ -2263,7 +2264,7 @@ BOOL GhostTrailsDlgProc::Apply(HWND hWnd) {
 
         // Set and validate
         pDefBmpTex->SetMapName(buffer);
-#ifdef MAX2013
+#if MAX_RELEASE >= MAX_RELEASE_R15
         const MCHAR* testName = pDefBmpTex->GetMapName();
 #else
         TCHAR* testName = pDefBmpTex->GetMapName();

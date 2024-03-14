@@ -33,7 +33,12 @@ Matrix3 SplineTrailSource::getTrailTM(
   // Return the TM of the spline at time t.
   assert(pShapeNode != NULL);
 
-  if (levelTimes.size() <= 0) return Matrix3(1);
+  if (levelTimes.size() <= 0) 
+#if MAX_RELEASE < MAX_RELEASE_R24
+    return Matrix3(TRUE);
+#else
+    return Matrix3();
+#endif
 
   // return pShapeNode->GetObjectTM(t);
 
@@ -253,7 +258,12 @@ void ParticleTrailSource::findSurroundingKeys(ParticleState& particle,
 
 Matrix3 ParticleTrailSource::getTrailTM(int idx, TimeValue t,
     std::vector<TimeValue>&) {
-  if (!pPartState) return Matrix3(TRUE);
+  if (!pPartState)
+#if MAX_RELEASE < MAX_RELEASE_R24
+    return Matrix3(TRUE);
+#else
+    return Matrix3();
+#endif
 
   int realPartIdx = idx;
 
@@ -264,7 +274,11 @@ Matrix3 ParticleTrailSource::getTrailTM(int idx, TimeValue t,
 
   findSurroundingKeys(particle, t, leftKeyIdx, rightKeyIdx);
 
+#if MAX_RELEASE < MAX_RELEASE_R24
   Matrix3 tm(TRUE);
+#else
+  Matrix3 tm = Matrix3();
+#endif
 
   if (leftKeyIdx == -1) {
     // Couldn't find any keys???
@@ -366,12 +380,22 @@ Matrix3 ParticleTrailSource::interpolateMatrices(
   // Assumes lTime <= cTime <= rTime
   //
 
-  if (!leftTM || !rightTM) return Matrix3(1);  // Identity
+  if (!leftTM || !rightTM) 
+#if MAX_RELEASE < MAX_RELEASE_R24
+    return Matrix3(TRUE);  // Identity
+#else
+    return Matrix3();  // Identity
+#endif
 
   if (cTime == lTime) return *leftTM;
   if (cTime == rTime) return *rightTM;
   if (lTime == rTime) return *leftTM;
-  if ((cTime < lTime) || (cTime > rTime)) return Matrix3(1);  // Identity
+  if ((cTime < lTime) || (cTime > rTime))
+#if MAX_RELEASE < MAX_RELEASE_R24
+    return Matrix3(TRUE);  // Identity
+#else
+    return Matrix3();
+#endif
 
   float interpFactor = fabs((float)(cTime - lTime) / (float)(rTime - lTime));
 
@@ -423,11 +447,20 @@ Matrix3 ParticleTrailSource::interpolateMatrices(
   rParts.q.MakeClosest(lParts.q);
   Quat interpRot = Slerp(lParts.q, rParts.q, interpFactor);
 
-  Matrix3 interpMat(1);
+#if MAX_RELEASE < MAX_RELEASE_R24
+  Matrix3 interpMat(TRUE);
+#else
+  Matrix3 interpMat = Matrix3();
+#endif
 
   interpMat.SetScale(interpScale);
 
-  Matrix3 rotMat(1);
+#if MAX_RELEASE < MAX_RELEASE_R24
+  Matrix3 rotMat(TRUE);
+#else
+  Matrix3 rotMat = Matrix3();
+#endif;
+
   rotMat.SetRotate(interpRot);
 
   interpMat = interpMat * rotMat;

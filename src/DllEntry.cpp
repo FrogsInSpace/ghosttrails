@@ -1,4 +1,4 @@
-/**********************************************************************
+﻿/**********************************************************************
  *<
         FILE: DllEntry.cpp
 
@@ -28,7 +28,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, ULONG fdwReason, LPVOID lpvReserved) {
   BOOL bRes = TRUE;
   hInstance = hinstDLL;
 
-#ifndef MAX9
+#if MAX_RELEASE < MAX_RELEASE_R9
   if (!controlsInit) {
     controlsInit = TRUE;
 
@@ -44,7 +44,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, ULONG fdwReason, LPVOID lpvReserved) {
     'http://support.microsoft.com/?kbid=259403' "
                     "(Microsoft Knowledge Base Article - 259403). We apologize
     for any inconvenience.";
-            
+
 
 
             MessageBox(GetActiveWindow(), sMessage, "Missing System File",
@@ -53,7 +53,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, ULONG fdwReason, LPVOID lpvReserved) {
     }
     FreeLibrary(hInstLibCheck);
     hInstLibCheck = NULL;
-    
+
 
 
     hInstLibCheck = LoadLibrary(_T("MSVCRT.DLL"));

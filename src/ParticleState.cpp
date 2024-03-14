@@ -22,8 +22,11 @@
 //
 // ---------------------------------------------------------------------------
 
+#if MAX_RELEASE < MAX_RELEASE_R24
 ParticlePositionKey::ParticlePositionKey() : tm(1), time(0), age(0) {}
-
+#else
+ParticlePositionKey::ParticlePositionKey() : tm(), time(0), age(0) {}
+#endif
 // ---------------------------------------------------------------------------
 
 ParticlePositionKey::ParticlePositionKey(const TimeValue& tim, const Point3& pt,

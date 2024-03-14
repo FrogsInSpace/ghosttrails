@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src/Logging.cpp" />
+    <ClCompile Include="src/DialogProcs.cpp" />
+    <ClCompile Include="src/DlgProgress.cpp" />
+    <ClCompile Include="src/DllEntry.cpp" />
+    <ClCompile Include="src/FlowEventFilter.cpp" />
+    <ClCompile Include="src/GhostTrails.cpp" />
+    <ClCompile Include="src/MaxUtils.cpp" />
+    <ClCompile Include="src/ParticleState.cpp" />
+    <ClCompile Include="src/ParticleStateBuilder.cpp" />
+    <ClCompile Include="src/ScopeLock.cpp" />
+    <ClCompile Include="src/TrailSource.cpp" />
+    <ClCompile Include="src/MaxProgress.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src/atlassert.h" />
+    <ClInclude Include="src/DlgProgress.h" />
+    <ClInclude Include="src/GhostTrails.h" />
+    <ClInclude Include="src/IProgress.h" />
+    <ClInclude Include="src/Logging.h" />
+    <ClInclude Include="src/MaxProgress.h" />
+    <ClInclude Include="src/MaxUtils.h" />
+    <ClInclude Include="src/ParticleState.h" />
+    <ClInclude Include="src/ParticleStateBuilder.h" />
+    <ClInclude Include="src/ScopeLock.h" />
+    <ClInclude Include="src/TrailSource.h" />
+    <ClInclude Include="src/resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GhostTrails.def" />
+    <None Include="changeLog.txt" />
+    <None Include="res\bitmap2.bmp">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\tire1_100x35.bmp">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\trails_bgthin.bmp">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\tire1.jpg">
+      <Filter>res</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="res">
+      <UniqueIdentifier>{78d25ddf-a563-47bd-93de-d371e8a4cdb5}</UniqueIdentifier>
+      <Extensions>.bmp;.jpg</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\GhostTrails.rc" />
+  </ItemGroup>
+</Project>

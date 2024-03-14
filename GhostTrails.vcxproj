@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup Label="Globals">
+		<ProjectGuid>{B23AC54F-C880-4EED-A5BC-CED61A5CFC2B}</ProjectGuid>
+		<ProjectName>GhostTrails</ProjectName>
+		<WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+	</PropertyGroup>
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="Max2025 - Hybrid|x64">
+			<Configuration>Max2025 - Hybrid</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Max2025 - Release|x64">
+			<Configuration>Max2025 - Release</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+	</ItemGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Max2025 - Release|x64'" Label="Configuration">
+		<CharacterSet>Unicode</CharacterSet>
+		<PlatformToolset>v142</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Max2025 - Hybrid|x64'" Label="Configuration">
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<PlatformToolset>v142</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Max2025 - Hybrid|x64'">
+		<PlatformToolset>v142</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Max2025 - Release|x64'">
+		<PlatformToolset>v143</PlatformToolset>
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+	<ImportGroup Label="ExtensionSettings">
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Max2025 - Release|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="$(ADSK_3DSMAX_SDK_2025)\ProjectSettings\propertySheets\3dsmax.cpp.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Max2025 - Hybrid|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="$(ADSK_3DSMAX_SDK_2025)\ProjectSettings\propertySheets\3dsmax.cpp.props" />
+	</ImportGroup>
+	<PropertyGroup>
+		<OutDir Condition="'$(Configuration)|$(Platform)'=='Max2025 - Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+		<IntDir Condition="'$(Configuration)|$(Platform)'=='Max2025 - Hybrid|x64'">$(Platform)\$(Configuration)\</IntDir>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Max2025 - Release|x64' Or '$(Configuration)|$(Platform)'=='Max2025 - HYbrid|x64'">
+		<LinkIncremental>false</LinkIncremental>
+		<!-- <IncludePath>C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt;$(IncludePath)</IncludePath> -->
+	</PropertyGroup>
+	<PropertyGroup>
+		<MaxSDKPath>$(ADSK_3DSMAX_SDK_2025)</MaxSDKPath>
+		<MaxSDKRelease>2025</MaxSDKRelease>
+		<TargetName>$(ProjectName)_$(MaxSDKRelease)_$(PlatformTarget)</TargetName>
+		<TargetExt>.dlm</TargetExt>
+	</PropertyGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Max2025 - Release|x64'">
+		<Midl>
+			<TargetEnvironment>X64</TargetEnvironment>
+		</Midl>
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<AdditionalIncludeDirectories>$(ADSK_3DSMAX_SDK_2025)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>MAX64;CUSTOM_MFC;WIN32;_WINDOWS;SHELL32LIB;UNICODE;_UNICODE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<DebugInformationFormat>None</DebugInformationFormat>
+			<LanguageStandard>stdcpp17</LanguageStandard>
+		</ClCompile>
+		<Link>
+			<AdditionalDependencies>bmm.lib;core.lib;geom.lib;gfx.lib;mesh.lib;maxutil.lib;maxscrpt.lib;paramblk2.lib;particleflow.lib;ParticleFlowTools.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalLibraryDirectories>$(ADSK_3DSMAX_SDK_2025)\lib\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+			<ModuleDefinitionFile>.\GhostTrails.def</ModuleDefinitionFile>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<DataExecutionPrevention>
+			</DataExecutionPrevention>
+			<TargetMachine>MachineX64</TargetMachine>
+			<GenerateDebugInformation>false</GenerateDebugInformation>
+			<SubSystem>Windows</SubSystem>
+			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+		</Link>
+		<ResourceCompile>
+			<AdditionalIncludeDirectories>$(VC_IncludePath)</AdditionalIncludeDirectories>
+		</ResourceCompile>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Max2025 - Hybrid|x64'">
+		<Midl>
+			<TargetEnvironment>X64</TargetEnvironment>
+		</Midl>
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<AdditionalIncludeDirectories>$(ADSK_3DSMAX_SDK_2025)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>MAX64;CUSTOM_MFC;WIN32;_WINDOWS;SHELL32LIB;UNICODE;_UNICODE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+			<LanguageStandard>stdcpp17</LanguageStandard>
+		</ClCompile>
+		<Link>
+			<AdditionalDependencies>bmm.lib;core.lib;geom.lib;gfx.lib;mesh.lib;maxutil.lib;maxscrpt.lib;paramblk2.lib;particleflow.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalLibraryDirectories>$(ADSK_3DSMAX_SDK_2025)\lib\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+			<ModuleDefinitionFile>.\GhostTrails.def</ModuleDefinitionFile>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<TargetMachine>MachineX64</TargetMachine>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Windows</SubSystem>
+			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemGroup>
+		<ClInclude Include="src/atlassert.h" />
+		<ClInclude Include="src/DlgProgress.h" />
+		<ClInclude Include="src/GhostTrails.h" />
+		<ClInclude Include="src/IProgress.h" />
+		<ClInclude Include="src/Logging.h" />
+		<ClInclude Include="src/MaxProgress.h" />
+		<ClInclude Include="src/MaxUtils.h" />
+		<ClInclude Include="src/ParticleState.h" />
+		<ClInclude Include="src/ParticleStateBuilder.h" />
+		<ClInclude Include="src/ScopeLock.h" />
+		<ClInclude Include="src/TrailSource.h" />
+		<ClInclude Include="src/resource.h" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="res\bitmap2.bmp" />
+		<None Include="res\tire1.jpg" />
+		<None Include="res\tire1_100x35.bmp" />
+		<None Include="res\trails_bgthin.bmp" />
+		<None Include="GhostTrails.def" />
+		<None Include="changeLog.txt" />
+	</ItemGroup>
+	<ItemGroup>
+		<ClCompile Include="src/Logging.cpp" />
+		<ClCompile Include="src/DialogProcs.cpp" />
+		<ClCompile Include="src/DlgProgress.cpp" />
+		<ClCompile Include="src/DllEntry.cpp" />
+		<ClCompile Include="src/FlowEventFilter.cpp" />
+		<ClCompile Include="src/GhostTrails.cpp" />
+		<ClCompile Include="src/MaxUtils.cpp" />
+		<ClCompile Include="src/ParticleState.cpp" />
+		<ClCompile Include="src/ParticleStateBuilder.cpp" />
+		<ClCompile Include="src/ScopeLock.cpp" />
+		<ClCompile Include="src/TrailSource.cpp" />
+		<ClCompile Include="src/MaxProgress.cpp" />
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="src\GhostTrails.rc" />
+	</ItemGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+	<ImportGroup Label="ExtensionTargets">
+	</ImportGroup>
+</Project>

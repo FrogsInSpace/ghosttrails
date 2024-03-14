@@ -1,6 +1,6 @@
 #include "GhostTrails.h"
 
-#ifdef MAX6
+#if MAX_RELEASE >= 6000
 #include <ParticleFlow/IParticleGroup.h>
 #include <ParticleFlow/PFExport.h>
 #include "IParticleObjectExt.h"
@@ -19,7 +19,7 @@ extern ParamBlockDesc2 ghosttrails_param_blk;
 
 class MyEnumProc : public DependentEnumProc {
  public:
-  virtual int proc(ReferenceMaker *rmaker);
+  virtual int proc(ReferenceMaker *rmaker); 
   INodeTab Nodes;
 };
 
@@ -42,7 +42,7 @@ static INT_PTR CALLBACK AddDlgProc(HWND hWnd, UINT msg, WPARAM wParam,
       SetWindowLongPtr(hWnd, GWLP_USERDATA, lParam);
 
       for (int i = 0; i < mod->pfNodes.Count(); i++) {
-#ifdef MAX2013
+#if MAX_RELEASE >= MAX_RELEASE_R15
         const MCHAR *name;
 
         name = mod->pfNodes[i]->GetName();
@@ -115,7 +115,7 @@ static INT_PTR CALLBACK AddDlgProc(HWND hWnd, UINT msg, WPARAM wParam,
 // ----------------------------------------------------------------------------
 
 void GhostTrails::PickPFEvents(HWND hWnd) {
-#ifdef MAX6
+#if MAX_RELEASE >= 60000
 
   Tab<INode *> pfEvents;
   int numberOfNodes = 1;
@@ -141,7 +141,7 @@ void GhostTrails::PickPFEvents(HWND hWnd) {
 
         if (epobj) {
           MyEnumProc dep;
-#ifdef MAX9
+#if MAX_RELEASE >= MAX_RELEASE_R9
           tos.obj->DoEnumDependents(&dep);
 #else
           tos.obj->EnumDependents(&dep);
