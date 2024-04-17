@@ -11,7 +11,7 @@
  *>	Copyright (c) 1997, All Rights Reserved.
  **********************************************************************/
 
-// Disable deprecated warnings for strcpy etc.
+ // Disable deprecated warnings for strcpy etc.
 #pragma warning(disable : 4996)
 
 #include <time.h>
@@ -40,6 +40,7 @@
 #define A_RENDER (A_PLUGIN1)
 #define PBLOCK_REF 0
 
+
 // ----------------------------------------------------------------------------
 
 // The material channel ID of the particle age mapping channel.
@@ -64,7 +65,7 @@ BOOL GhostTrails::debugLogging = FALSE;
 // ----------------------------------------------------------------------------
 
 class GhostTrailsClassDesc : public ClassDesc2 {
- public:
+public:
   DWORD _dwCookie;
   GhostTrailsClassDesc() {
     _dwCookie = NULL;
@@ -75,7 +76,7 @@ class GhostTrailsClassDesc : public ClassDesc2 {
     return new GhostTrails();
   }
   const TCHAR* ClassName() { return GetString(IDS_CLASS_NAME); }
-#if MAX_RELEASE >= MAX_RELEASE_R24
+#if MAX_RELEASE_R24
   const TCHAR* NonLocalizedClassName() { return _T("GhostTrails"); }
 #endif
   SClass_ID SuperClassID() { return OSM_CLASS_ID; }
@@ -119,188 +120,188 @@ static ParticlePickerPBValidator particleValidator;
 
 // ----------------------------------------------------------------------------
 
-#if MAX_RELEASE < MAX_RELEASE_R15
+#if !MAX_RELEASE_R15
 #define p_end end
 #endif
 
 // clang-format off
-ParamBlockDesc2 ghosttrails_param_blk ( GhostTrails::ghosttrails_params, _T("main"),  0, &GhostTrailsDesc, 
-	P_AUTO_CONSTRUCT + P_AUTO_UI + P_MULTIMAP, PBLOCK_REF, 
-    // map rollups
-		4, 
-        GhostTrails::ghosttrails_map_main,			IDD_PANEL_MAIN,			IDS_PARAMS1, 0, 0, NULL,
-        GhostTrails::ghosttrails_map_meshparams,		IDD_PANEL_MESHPARAMS,	IDS_PARAMS2, 0, 0, NULL,
-		GhostTrails::ghosttrails_map_apply,			IDD_PANEL_APPLY,		IDS_PARAMS3, 0, 0, NULL,
-		GhostTrails::ghosttrails_particle,			IDD_PANEL_PARTICLE,		IDS_PARAMS4, 0, 0, NULL,
-		//ghosttrails_map_wizards,  IDD_PANEL_WIZARDS, IDS_PARAMS3, 0, 0, NULL,
+ParamBlockDesc2 ghosttrails_param_blk(GhostTrails::ghosttrails_params, _T("main"), 0, &GhostTrailsDesc,
+  P_AUTO_CONSTRUCT + P_AUTO_UI + P_MULTIMAP, PBLOCK_REF,
+  // map rollups
+  4,
+  GhostTrails::ghosttrails_map_main, IDD_PANEL_MAIN, IDS_PARAMS1, 0, 0, NULL,
+  GhostTrails::ghosttrails_map_meshparams, IDD_PANEL_MESHPARAMS, IDS_PARAMS2, 0, 0, NULL,
+  GhostTrails::ghosttrails_map_apply, IDD_PANEL_APPLY, IDS_PARAMS3, 0, 0, NULL,
+  GhostTrails::ghosttrails_particle, IDD_PANEL_PARTICLE, IDS_PARAMS4, 0, 0, NULL,
+  //ghosttrails_map_wizards,  IDD_PANEL_WIZARDS, IDS_PARAMS3, 0, 0, NULL,
 
 
-	// START: Original Parameters
-	// Cannot change these!
-	GhostTrails::pb_frames, 		_T("old_frames"), 		TYPE_INT, 	P_ANIMATABLE, 	IDS_OLDFRAMES_SPIN, 
-		p_default, 		3, 
-		p_range, 		0, 100000, 
-		p_ui, 			GhostTrails::ghosttrails_map_main,		TYPE_SPINNER,		EDITTYPE_INT, IDC_MAIN_FRAMES_EDIT,	IDC_MAIN_FRAMES_SPIN, SPIN_AUTOSCALE, 
-		p_end,
-	GhostTrails::pb_segments, 		_T("segments"), 			TYPE_INT, 	0, 	IDS_SEGMENTS_SPIN, 
-		p_default, 		3, 
-		p_range, 		1, 10000, 
-		//p_ui, 			ghosttrails_map_meshparams, TYPE_SPINNER,		EDITTYPE_INT, IDC_SEGMENTS_EDIT, IDC_SEGMENTS_SPIN, SPIN_AUTOSCALE, 
-		p_end,
-	GhostTrails::pb_flipnormals, 	_T("flipNormals"),			TYPE_BOOL, 		0,				IDS_FLIPNORMALS,
-		p_default, 		FALSE, 
-		p_ui, 			GhostTrails::ghosttrails_map_meshparams, TYPE_SINGLECHEKBOX, 	IDC_FLIPNORMALS, 
-		p_end, 
-	GhostTrails::pb_splinesteps, 	_T("spline steps"), 		TYPE_INT, 	0, 	IDS_SPLINESTEPS_SPIN, 
-		p_default, 		6, 
-		p_range, 		0, 10000, 
-		p_ui, 			GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER,		EDITTYPE_INT, IDC_SPLINESTEPS_EDIT, IDC_SPLINESTEPS_SPIN, SPIN_AUTOSCALE, 
-		p_end,
-	// END: Original Parameters.
+// START: Original Parameters
+// Cannot change these!
+GhostTrails::pb_frames, _T("old_frames"), TYPE_INT, P_ANIMATABLE, IDS_OLDFRAMES_SPIN,
+p_default, 3,
+p_range, 0, 100000,
+p_ui, GhostTrails::ghosttrails_map_main, TYPE_SPINNER, EDITTYPE_INT, IDC_MAIN_FRAMES_EDIT, IDC_MAIN_FRAMES_SPIN, SPIN_AUTOSCALE,
+p_end,
+GhostTrails::pb_segments, _T("segments"), TYPE_INT, 0, IDS_SEGMENTS_SPIN,
+p_default, 3,
+p_range, 1, 10000,
+//p_ui, 			ghosttrails_map_meshparams, TYPE_SPINNER,		EDITTYPE_INT, IDC_SEGMENTS_EDIT, IDC_SEGMENTS_SPIN, SPIN_AUTOSCALE, 
+p_end,
+GhostTrails::pb_flipnormals, _T("flipNormals"), TYPE_BOOL, 0, IDS_FLIPNORMALS,
+p_default, FALSE,
+p_ui, GhostTrails::ghosttrails_map_meshparams, TYPE_SINGLECHEKBOX, IDC_FLIPNORMALS,
+p_end,
+GhostTrails::pb_splinesteps, _T("spline steps"), TYPE_INT, 0, IDS_SPLINESTEPS_SPIN,
+p_default, 6,
+p_range, 0, 10000,
+p_ui, GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER, EDITTYPE_INT, IDC_SPLINESTEPS_EDIT, IDC_SPLINESTEPS_SPIN, SPIN_AUTOSCALE,
+p_end,
+// END: Original Parameters.
 
 
-	// Parameters
-	GhostTrails::pb_type, 			_T("moving or still"),		TYPE_INT, 		0,				IDS_MOVINGORANCHORED,
-		p_default, 		0, 
-		p_ui, 			GhostTrails::ghosttrails_map_main,	TYPE_RADIO,			2,				IDC_MAIN_TYPE_MOVING,		IDC_MAIN_TYPE_ANCHORED,
-		p_end, 
-	GhostTrails::pb_userange, 		_T("pb_userange"),			TYPE_BOOL, 		0,				IDS_USERANGE,
-		p_default, 		FALSE, 
-		p_ui, 			GhostTrails::ghosttrails_map_main,	TYPE_SINGLECHEKBOX, 	IDC_MAIN_USERANGE, 
-		p_end, 
+// Parameters
+GhostTrails::pb_type, _T("moving or still"), TYPE_INT, 0, IDS_MOVINGORANCHORED,
+p_default, 0,
+p_ui, GhostTrails::ghosttrails_map_main, TYPE_RADIO, 2, IDC_MAIN_TYPE_MOVING, IDC_MAIN_TYPE_ANCHORED,
+p_end,
+GhostTrails::pb_userange, _T("pb_userange"), TYPE_BOOL, 0, IDS_USERANGE,
+p_default, FALSE,
+p_ui, GhostTrails::ghosttrails_map_main, TYPE_SINGLECHEKBOX, IDC_MAIN_USERANGE,
+p_end,
 
-	GhostTrails::pb_startframe, 	_T("start frame"), 		TYPE_INT, 		0, 	IDS_STARTFRAME_SPIN, 
-		p_default, 		0, 
-		p_range, 		0, 100000000, 
-		p_ui, 			GhostTrails::ghosttrails_map_main,	TYPE_SPINNER,		EDITTYPE_TIME, IDC_MAIN_STARTFRAME_EDIT,	IDC_MAIN_STARTFRAME_SPIN, SPIN_AUTOSCALE, 
-		p_end,
-	GhostTrails::pb_endframe, 		_T("end frame"), 		TYPE_INT, 		0, 	IDS_ENDFRAME_SPIN, 
-		p_default, 		GetTicksPerFrame(), 
-		p_range, 		0, 100000000, 
-		p_ui, 			GhostTrails::ghosttrails_map_main,	TYPE_SPINNER,		EDITTYPE_TIME, IDC_MAIN_ENDFRAME_EDIT,	IDC_MAIN_ENDFRAME_SPIN, SPIN_AUTOSCALE, 
-		p_end,
+GhostTrails::pb_startframe, _T("start frame"), TYPE_INT, 0, IDS_STARTFRAME_SPIN,
+p_default, 0,
+p_range, 0, 100000000,
+p_ui, GhostTrails::ghosttrails_map_main, TYPE_SPINNER, EDITTYPE_TIME, IDC_MAIN_STARTFRAME_EDIT, IDC_MAIN_STARTFRAME_SPIN, SPIN_AUTOSCALE,
+p_end,
+GhostTrails::pb_endframe, _T("end frame"), TYPE_INT, 0, IDS_ENDFRAME_SPIN,
+p_default, GetTicksPerFrame(),
+p_range, 0, 100000000,
+p_ui, GhostTrails::ghosttrails_map_main, TYPE_SPINNER, EDITTYPE_TIME, IDC_MAIN_ENDFRAME_EDIT, IDC_MAIN_ENDFRAME_SPIN, SPIN_AUTOSCALE,
+p_end,
 
-	//Mesh Parameters
-	GhostTrails::pb_segsperframe,	_T("segments per frame"), 	TYPE_FLOAT, 	 0, 	IDS_SEGSPERFRAME_SPIN, 
-		p_default, 		1.0, 
-		p_range, 		.0001, 10000.0, 
-		p_ui, 			GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER,	EDITTYPE_POS_FLOAT, IDC_SEGSPERFRAME_EDIT, IDC_SEGSPERFRAME_SPIN, 0.1f, 
-		p_end,
+//Mesh Parameters
+GhostTrails::pb_segsperframe, _T("segments per frame"), TYPE_FLOAT, 0, IDS_SEGSPERFRAME_SPIN,
+p_default, 1.0,
+p_range, .0001, 10000.0,
+p_ui, GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER, EDITTYPE_POS_FLOAT, IDC_SEGSPERFRAME_EDIT, IDC_SEGSPERFRAME_SPIN, 0.1f,
+p_end,
 
-	GhostTrails::pb_urepeat,			_T("pb_urepeat"), 	TYPE_FLOAT, 	0, 	IDS_UREPEAT_SPIN, 
-		p_default, 		1.0, 
-		p_range, 		.0001, 10000.0, 
-		p_ui, 			GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER,	EDITTYPE_FLOAT, IDC_UREPEAT_EDIT, IDC_UREPEAT_SPIN, 0.1f, 
-		p_end,
+GhostTrails::pb_urepeat, _T("pb_urepeat"), TYPE_FLOAT, 0, IDS_UREPEAT_SPIN,
+p_default, 1.0,
+p_range, .0001, 10000.0,
+p_ui, GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER, EDITTYPE_FLOAT, IDC_UREPEAT_EDIT, IDC_UREPEAT_SPIN, 0.1f,
+p_end,
 
-	//Apply_Tex Parameters
-	GhostTrails::pb_apply_tex_b, 	_T("pb_apply_tex_b"),			TYPE_BOOL, 		P_TRANSIENT,		IDS_APPLY_TEX_B,
-		p_default, 		FALSE, 
-		p_ui, 			GhostTrails::ghosttrails_map_apply,	TYPE_SINGLECHEKBOX, 	IDC_APPLY_TEX_B, 
-		p_end, 
+//Apply_Tex Parameters
+GhostTrails::pb_apply_tex_b, _T("pb_apply_tex_b"), TYPE_BOOL, P_TRANSIENT, IDS_APPLY_TEX_B,
+p_default, FALSE,
+p_ui, GhostTrails::ghosttrails_map_apply, TYPE_SINGLECHEKBOX, IDC_APPLY_TEX_B,
+p_end,
 
-	GhostTrails::pb_apply_tex_vrepeat,_T("pb_apply_tex_vrepeat"), 	TYPE_FLOAT, 	P_TRANSIENT, 	IDS_APPLY_TEX_VREPEAT, 
-		p_default, 		1.0, 
-		p_range, 		.0001, 10000.0, 
-		p_ui, 			GhostTrails::ghosttrails_map_apply, TYPE_SPINNER,	EDITTYPE_FLOAT, IDC_APPLY_TEX_VREPEAT_EDIT, IDC_APPLY_TEX_VREPEAT_SPIN, 1.0f, 
-		p_end,
+GhostTrails::pb_apply_tex_vrepeat, _T("pb_apply_tex_vrepeat"), TYPE_FLOAT, P_TRANSIENT, IDS_APPLY_TEX_VREPEAT,
+p_default, 1.0,
+p_range, .0001, 10000.0,
+p_ui, GhostTrails::ghosttrails_map_apply, TYPE_SPINNER, EDITTYPE_FLOAT, IDC_APPLY_TEX_VREPEAT_EDIT, IDC_APPLY_TEX_VREPEAT_SPIN, 1.0f,
+p_end,
 
-	//Apply_Fade Parameters	
-	GhostTrails::pb_apply_fade_b, 	_T("pb_apply_fade_b"),			TYPE_BOOL, 		P_TRANSIENT,	IDS_APPLY_FADE_B,
-		p_default, 		FALSE, 
-		p_ui, 			GhostTrails::ghosttrails_map_apply,	TYPE_SINGLECHEKBOX, 	IDC_APPLY_FADE_B, 
-		p_end, 
+//Apply_Fade Parameters	
+GhostTrails::pb_apply_fade_b, _T("pb_apply_fade_b"), TYPE_BOOL, P_TRANSIENT, IDS_APPLY_FADE_B,
+p_default, FALSE,
+p_ui, GhostTrails::ghosttrails_map_apply, TYPE_SINGLECHEKBOX, IDC_APPLY_FADE_B,
+p_end,
 
-	GhostTrails::pb_apply_fade_mp, _T("pb_apply_fade_mp"), 	TYPE_FLOAT, 			P_TRANSIENT, 	IDS_APPLY_FADE_MP, 
-		p_default, 		.8, 
-		p_range, 		.0001, 1.0, 
-		p_ui, 			GhostTrails::ghosttrails_map_apply, TYPE_SPINNER,	EDITTYPE_POS_FLOAT, IDC_APPLY_FADE_MP_EDIT, IDC_APPLY_FADE_MP_SPIN, 0.1f, 
-		p_end,
+GhostTrails::pb_apply_fade_mp, _T("pb_apply_fade_mp"), TYPE_FLOAT, P_TRANSIENT, IDS_APPLY_FADE_MP,
+p_default, .8,
+p_range, .0001, 1.0,
+p_ui, GhostTrails::ghosttrails_map_apply, TYPE_SPINNER, EDITTYPE_POS_FLOAT, IDC_APPLY_FADE_MP_EDIT, IDC_APPLY_FADE_MP_SPIN, 0.1f,
+p_end,
 
-	// Particle Trails On/Off
-	GhostTrails::pb_particle_trails_b, 	_T("pb_particle_trails_b"),			TYPE_BOOL, 		0,		IDS_PARTICLE_B,
-		p_default, 		FALSE, 
-		p_ui, 			GhostTrails::ghosttrails_particle,	TYPE_SINGLECHEKBOX, 	IDC_PARTICLE_ENABLE, 
-		p_end,
-		
-	// Particle Node reference
-	GhostTrails::pb_particle_node,		_T("pb_particle_node"),				TYPE_INODE,		0,				IDS_PARTICLE_NODE,	// not animatable
-		p_ui,			GhostTrails::ghosttrails_particle,	TYPE_PICKNODEBUTTON,	IDC_PARTICLE_CHOOSE,
-		p_validator,	&particleValidator,
-		p_prompt,		IDS_PARTICLE_NODE_PROMPT,
-		p_end,
+// Particle Trails On/Off
+GhostTrails::pb_particle_trails_b, _T("pb_particle_trails_b"), TYPE_BOOL, 0, IDS_PARTICLE_B,
+p_default, FALSE,
+p_ui, GhostTrails::ghosttrails_particle, TYPE_SINGLECHEKBOX, IDC_PARTICLE_ENABLE,
+p_end,
 
-	GhostTrails::pb_generate_map, 	_T("generateMap"),			TYPE_BOOL, 		0,				IDS_GENERATE_MAP,
-		p_default, 		TRUE, 
-		p_ui, 			GhostTrails::ghosttrails_map_meshparams, TYPE_SINGLECHEKBOX, 	IDC_GENERATE_MAP, 
-		p_end, 
-	GhostTrails::pb_generate_age_map, 	_T("generateAgeMap"),			TYPE_BOOL, 		0,				IDS_GENERATE_AGE_MAP,
-		p_default, 		FALSE, 
-		p_ui, 			GhostTrails::ghosttrails_particle, TYPE_SINGLECHEKBOX, 	IDC_GENERATE_AGE_MAP, 
-		p_end, 
+// Particle Node reference
+GhostTrails::pb_particle_node, _T("pb_particle_node"), TYPE_INODE, 0, IDS_PARTICLE_NODE,	// not animatable
+p_ui, GhostTrails::ghosttrails_particle, TYPE_PICKNODEBUTTON, IDC_PARTICLE_CHOOSE,
+p_validator, & particleValidator,
+p_prompt, IDS_PARTICLE_NODE_PROMPT,
+p_end,
 
-	// PFlow event filtering
-	GhostTrails::pb_useallpf, 	_T("useAllPFEvents"), 	TYPE_BOOL, 		0,				IDS_USEALLPFEVENTS,
-	    p_default,		TRUE,
-		p_ui, 			GhostTrails::ghosttrails_particle, 			TYPE_SINGLECHEKBOX, 	IDC_USEALLPF, 
-		p_end, 
-	GhostTrails::pb_pfeventlist,    _T("pfEventList"),  TYPE_INODE_TAB,		0,	P_AUTO_UI|P_VARIABLE_SIZE,	IDS_PFEVENTLIST,
-		p_ui, 			GhostTrails::ghosttrails_particle,			TYPE_NODELISTBOX, IDC_PFLIST,0,0,IDC_PFREMOVE,
-		p_end,
-		
-	GhostTrails::pb_skippart,			_T("pb_skippart"), 	TYPE_INT, 	0, 	IDS_SKIPPART, 
-		p_default, 		1, 
-		p_range, 		1, 1000, 
-		p_ui, 			GhostTrails::ghosttrails_particle, TYPE_SPINNER,	EDITTYPE_INT, IDC_PARTICLE_SKIPPARTS_EDIT, IDC_PARTICLE_SKIPPARTS_SPIN, SPIN_AUTOSCALE, 
-		p_end,
+GhostTrails::pb_generate_map, _T("generateMap"), TYPE_BOOL, 0, IDS_GENERATE_MAP,
+p_default, TRUE,
+p_ui, GhostTrails::ghosttrails_map_meshparams, TYPE_SINGLECHEKBOX, IDC_GENERATE_MAP,
+p_end,
+GhostTrails::pb_generate_age_map, _T("generateAgeMap"), TYPE_BOOL, 0, IDS_GENERATE_AGE_MAP,
+p_default, FALSE,
+p_ui, GhostTrails::ghosttrails_particle, TYPE_SINGLECHEKBOX, IDC_GENERATE_AGE_MAP,
+p_end,
 
-	GhostTrails::pb_startpart,			_T("pb_startpart"), 	TYPE_INT, 	0, 	IDS_STARTPART, 
-		p_default, 		1, 
-		p_range, 		1, 1000, 
-		p_ui, 			GhostTrails::ghosttrails_particle, TYPE_SPINNER,	EDITTYPE_INT, IDC_PARTICLE_STARTPART_EDIT, IDC_PARTICLE_STARTPART_SPIN, SPIN_AUTOSCALE, 
-		p_end,
+// PFlow event filtering
+GhostTrails::pb_useallpf, _T("useAllPFEvents"), TYPE_BOOL, 0, IDS_USEALLPFEVENTS,
+p_default, TRUE,
+p_ui, GhostTrails::ghosttrails_particle, TYPE_SINGLECHEKBOX, IDC_USEALLPF,
+p_end,
+GhostTrails::pb_pfeventlist, _T("pfEventList"), TYPE_INODE_TAB, 0, P_AUTO_UI | P_VARIABLE_SIZE, IDS_PFEVENTLIST,
+p_ui, GhostTrails::ghosttrails_particle, TYPE_NODELISTBOX, IDC_PFLIST, 0, 0, IDC_PFREMOVE,
+p_end,
 
+GhostTrails::pb_skippart, _T("pb_skippart"), TYPE_INT, 0, IDS_SKIPPART,
+p_default, 1,
+p_range, 1, 1000,
+p_ui, GhostTrails::ghosttrails_particle, TYPE_SPINNER, EDITTYPE_INT, IDC_PARTICLE_SKIPPARTS_EDIT, IDC_PARTICLE_SKIPPARTS_SPIN, SPIN_AUTOSCALE,
+p_end,
 
-	// String or Stretch mapping option.
-	GhostTrails::pb_maptype, 			_T("maptype"),		TYPE_INT, 		0,				IDS_MAPTYPE,
-		p_default, 		0, 
-		p_ui, 			GhostTrails::ghosttrails_map_meshparams,	TYPE_RADIO,			2,				IDC_MAPTYPE_STRING,		IDC_MAPTYPE_STRETCH,
-		p_end, 
-
-	GhostTrails::pb_nummtls,			_T("pb_nummtls"), 	TYPE_INT, 	0, 	IDS_NUMMTLS, 
-		p_default, 		1, 
-		p_range, 		1, 1000, 
-		p_ui, 			GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER,	EDITTYPE_INT, IDC_NUMMTLS_EDIT, IDC_NUMMTLS_SPIN, SPIN_AUTOSCALE, 
-		p_end,
-
-	// Render params for segs per frame and spline steps. Added for v 3.61
-
-	GhostTrails::pb_segsperframe_render,	_T("segments per frame render"), 	TYPE_FLOAT, 	 0, 	IDS_SEGSPERFRAME_RENDER, 
-		p_default, 		1.0, 
-		p_range, 		.0001, 10000.0, 
-		p_ui, 			GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER,	EDITTYPE_POS_FLOAT, IDC_SEGSPERFRAME_RENDER_EDIT, IDC_SEGSPERFRAME_RENDER_SPIN, 0.1f, 
-		p_end,
-	GhostTrails::pb_segsperframe_render_on, 	_T("segments_render_on"), 	TYPE_BOOL, 		0,				IDS_SEGSPERFRAME_USE_RENDER,
-	    p_default,		FALSE,
-		p_ui, 			GhostTrails::ghosttrails_map_meshparams, 			TYPE_SINGLECHEKBOX, 	IDC_SEGMENT_IS_RENDER, 
-		p_end, 
-	GhostTrails::pb_splinesteps_render,	_T("spline steps render"), 	TYPE_INT, 	 0, 	IDS_SPLINESTEPS_RENDER, 
-		p_default, 		6, 
-		p_range, 		0, 10000, 
-		p_ui, 			GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER,	EDITTYPE_INT, IDC_SPLINESTEPS_RENDER_EDIT, IDC_SPLINESTEPS_RENDER_SPIN, SPIN_AUTOSCALE, 
-		p_end,
-	GhostTrails::pb_splinesteps_render_on, 	_T("splinesteps_render_on"), 	TYPE_BOOL, 		0,				IDS_SPLINESTEPS_USE_RENDER,
-	    p_default,		FALSE,
-		p_ui, 			GhostTrails::ghosttrails_map_meshparams, 			TYPE_SINGLECHEKBOX, 	IDC_SPLINESTEPS_IS_RENDER, 
-		p_end, 
-
-	GhostTrails::pb_use_pflow_mtlids, _T("usePFlowMtlIDs"), TYPE_BOOL, 0, IDS_USE_PFLOW_MTLIDS,
-		p_default, FALSE,
-		p_ui, GhostTrails::ghosttrails_particle, TYPE_SINGLECHEKBOX, IDC_USE_PFLOW_MTLIDS,
-		p_end,
+GhostTrails::pb_startpart, _T("pb_startpart"), TYPE_INT, 0, IDS_STARTPART,
+p_default, 1,
+p_range, 1, 1000,
+p_ui, GhostTrails::ghosttrails_particle, TYPE_SPINNER, EDITTYPE_INT, IDC_PARTICLE_STARTPART_EDIT, IDC_PARTICLE_STARTPART_SPIN, SPIN_AUTOSCALE,
+p_end,
 
 
-	p_end
+// String or Stretch mapping option.
+GhostTrails::pb_maptype, _T("maptype"), TYPE_INT, 0, IDS_MAPTYPE,
+p_default, 0,
+p_ui, GhostTrails::ghosttrails_map_meshparams, TYPE_RADIO, 2, IDC_MAPTYPE_STRING, IDC_MAPTYPE_STRETCH,
+p_end,
+
+GhostTrails::pb_nummtls, _T("pb_nummtls"), TYPE_INT, 0, IDS_NUMMTLS,
+p_default, 1,
+p_range, 1, 1000,
+p_ui, GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER, EDITTYPE_INT, IDC_NUMMTLS_EDIT, IDC_NUMMTLS_SPIN, SPIN_AUTOSCALE,
+p_end,
+
+// Render params for segs per frame and spline steps. Added for v 3.61
+
+GhostTrails::pb_segsperframe_render, _T("segments per frame render"), TYPE_FLOAT, 0, IDS_SEGSPERFRAME_RENDER,
+p_default, 1.0,
+p_range, .0001, 10000.0,
+p_ui, GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER, EDITTYPE_POS_FLOAT, IDC_SEGSPERFRAME_RENDER_EDIT, IDC_SEGSPERFRAME_RENDER_SPIN, 0.1f,
+p_end,
+GhostTrails::pb_segsperframe_render_on, _T("segments_render_on"), TYPE_BOOL, 0, IDS_SEGSPERFRAME_USE_RENDER,
+p_default, FALSE,
+p_ui, GhostTrails::ghosttrails_map_meshparams, TYPE_SINGLECHEKBOX, IDC_SEGMENT_IS_RENDER,
+p_end,
+GhostTrails::pb_splinesteps_render, _T("spline steps render"), TYPE_INT, 0, IDS_SPLINESTEPS_RENDER,
+p_default, 6,
+p_range, 0, 10000,
+p_ui, GhostTrails::ghosttrails_map_meshparams, TYPE_SPINNER, EDITTYPE_INT, IDC_SPLINESTEPS_RENDER_EDIT, IDC_SPLINESTEPS_RENDER_SPIN, SPIN_AUTOSCALE,
+p_end,
+GhostTrails::pb_splinesteps_render_on, _T("splinesteps_render_on"), TYPE_BOOL, 0, IDS_SPLINESTEPS_USE_RENDER,
+p_default, FALSE,
+p_ui, GhostTrails::ghosttrails_map_meshparams, TYPE_SINGLECHEKBOX, IDC_SPLINESTEPS_IS_RENDER,
+p_end,
+
+GhostTrails::pb_use_pflow_mtlids, _T("usePFlowMtlIDs"), TYPE_BOOL, 0, IDS_USE_PFLOW_MTLIDS,
+p_default, FALSE,
+p_ui, GhostTrails::ghosttrails_particle, TYPE_SINGLECHEKBOX, IDC_USE_PFLOW_MTLIDS,
+p_end,
+
+
+p_end
 );
 // clang-format on
 
@@ -359,7 +360,7 @@ void EnableRollup_Main(HWND hWnd, IParamBlock2* pblock) {
     // Start Frame.
     EnableWindow(GetDlgItem(hWnd, IDC_MAIN_TEXT1), bShowRange);
     ISpinnerControl* ISpin =
-        GetISpinner(GetDlgItem(hWnd, IDC_MAIN_STARTFRAME_SPIN));
+      GetISpinner(GetDlgItem(hWnd, IDC_MAIN_STARTFRAME_SPIN));
     if (ISpin) ISpin->Enable(bShowRange);
   }
 
@@ -367,14 +368,14 @@ void EnableRollup_Main(HWND hWnd, IParamBlock2* pblock) {
     // End Frame.
     EnableWindow(GetDlgItem(hWnd, IDC_MAIN_TEXT2), bShowRange);
     ISpinnerControl* ISpin2 =
-        GetISpinner(GetDlgItem(hWnd, IDC_MAIN_ENDFRAME_SPIN));
+      GetISpinner(GetDlgItem(hWnd, IDC_MAIN_ENDFRAME_SPIN));
     if (ISpin2) ISpin2->Enable(bShowRange);
   }
   {
     // Frames to lag.
     EnableWindow(GetDlgItem(hWnd, IDC_MAIN_TEXT3), !bIsAnchored);
     ISpinnerControl* ISpin2 =
-        GetISpinner(GetDlgItem(hWnd, IDC_MAIN_FRAMES_SPIN));
+      GetISpinner(GetDlgItem(hWnd, IDC_MAIN_FRAMES_SPIN));
     if (ISpin2) ISpin2->Enable(!bIsAnchored);
   }
 
@@ -400,31 +401,31 @@ void EnableRollup_MeshParams(HWND hWnd, IParamBlock2* pblock) {
   // Segs Per Frames.
   BOOL bUseRenderSegs = FALSE;
   pblock->GetValue(GhostTrails::pb_segsperframe_render_on, 0, bUseRenderSegs,
-                   FOREVER);
+    FOREVER);
 
   EnableWindow(GetDlgItem(hWnd, IDC_SEGSPERFRAME_VIEWPORT_LABEL), bEnable);
   EnableWindow(GetDlgItem(hWnd, IDC_SEGSPERFRAME_RENDER_LABEL),
-               bEnable && bUseRenderSegs);
+    bEnable && bUseRenderSegs);
 
   EnableWindow(GetDlgItem(hWnd, IDC_SEGMENT_IS_RENDER), bEnable);
   ISpinnerControl* ISpin = GetISpinner(GetDlgItem(hWnd, IDC_SEGSPERFRAME_SPIN));
   if (ISpin) ISpin->Enable(bEnable);
   ISpinnerControl* ISpinRender =
-      GetISpinner(GetDlgItem(hWnd, IDC_SEGSPERFRAME_RENDER_SPIN));
+    GetISpinner(GetDlgItem(hWnd, IDC_SEGSPERFRAME_RENDER_SPIN));
   if (ISpinRender) ISpinRender->Enable(bEnable && bUseRenderSegs);
 
   BOOL bUseRenderSplineSteps = FALSE;
   pblock->GetValue(GhostTrails::pb_splinesteps_render_on, 0,
-                   bUseRenderSplineSteps, FOREVER);
+    bUseRenderSplineSteps, FOREVER);
   EnableWindow(GetDlgItem(hWnd, IDC_SPLINESTEPS_RENDER_LABEL),
-               bUseRenderSplineSteps);
+    bUseRenderSplineSteps);
   ISpinRender = GetISpinner(GetDlgItem(hWnd, IDC_SPLINESTEPS_RENDER_SPIN));
   if (ISpinRender) ISpinRender->Enable(bUseRenderSplineSteps);
 
   // URepeat
   EnableWindow(GetDlgItem(hWnd, IDC_MESHPARAMS_TEXT3), bEnable);
   ISpinnerControl* ISpinURepeat =
-      GetISpinner(GetDlgItem(hWnd, IDC_UREPEAT_SPIN));
+    GetISpinner(GetDlgItem(hWnd, IDC_UREPEAT_SPIN));
   if (ISpinURepeat) ISpinURepeat->Enable(bEnable);
 
   LOGIT;
@@ -439,9 +440,9 @@ void EnableRollup_Apply(HWND hWnd, IParamBlock2* pblock) {
   TCHAR pchEditContents[200];
   BOOL bShowTex, bShowFade, bShowButton;
   pblock->GetValue(GhostTrails::pb_apply_tex_b, TimeValue(0), bShowTex,
-                   FOREVER);
+    FOREVER);
   pblock->GetValue(GhostTrails::pb_apply_fade_b, TimeValue(0), bShowFade,
-                   FOREVER);
+    FOREVER);
   GetWindowText(GetDlgItem(hWnd, IDC_APPLY_TEX_EDIT), pchEditContents, 199);
   bShowButton = bShowFade || (bShowTex && *pchEditContents);
 
@@ -457,7 +458,7 @@ void EnableRollup_Apply(HWND hWnd, IParamBlock2* pblock) {
     EnableWindow(GetDlgItem(hWnd, IDC_APPLY_TEX_TEXT2), bShowTex);
     EnableWindow(GetDlgItem(hWnd, IDC_APPLY_TEX_BROWSE), bShowTex);
     ISpinnerControl* ISpin =
-        GetISpinner(GetDlgItem(hWnd, IDC_APPLY_TEX_VREPEAT_SPIN));
+      GetISpinner(GetDlgItem(hWnd, IDC_APPLY_TEX_VREPEAT_SPIN));
     if (ISpin) ISpin->Enable(bShowTex);
   }
   {
@@ -465,7 +466,7 @@ void EnableRollup_Apply(HWND hWnd, IParamBlock2* pblock) {
 
     EnableWindow(GetDlgItem(hWnd, IDC_APPLY_FADE_TEXT1), bShowFade);
     ISpinnerControl* ISpin2 =
-        GetISpinner(GetDlgItem(hWnd, IDC_APPLY_FADE_MP_SPIN));
+      GetISpinner(GetDlgItem(hWnd, IDC_APPLY_FADE_MP_SPIN));
     if (ISpin2) ISpin2->Enable(bShowFade);
   }
 
@@ -550,8 +551,8 @@ class CModifyException {};
 // Returns TRUE is all values could be calculated successfully, FALSE otherwise
 //
 BOOL gGetStartAndEndTimes(IParamBlock2* pBlock, Interval& curTime,
-                          TimeValue* pStart, TimeValue* pEnd, double* pLevels,
-                          double* pTicksPerLevel, BOOL inRenderMode) {
+  TimeValue* pStart, TimeValue* pEnd, double* pLevels,
+  double* pTicksPerLevel, BOOL inRenderMode) {
   // LOGIT;
   if (!pBlock) return FALSE;
 
@@ -565,9 +566,9 @@ BOOL gGetStartAndEndTimes(IParamBlock2* pBlock, Interval& curTime,
 
   if (bShowRange) {
     pBlock->GetValue(GhostTrails::pb_startframe, TimeValue(0), iStartFrame,
-                     FOREVER);
+      FOREVER);
     pBlock->GetValue(GhostTrails::pb_endframe, TimeValue(0), iEndFrame,
-                     FOREVER);
+      FOREVER);
 
     // Not saved as frames anymore (as of v3.06)
     // iStartFrame *= GetTicksPerFrame();
@@ -583,12 +584,12 @@ BOOL gGetStartAndEndTimes(IParamBlock2* pBlock, Interval& curTime,
   // Get levels per frame
   BOOL bUseRenderSegs = FALSE;
   pBlock->GetValue(GhostTrails::pb_segsperframe_render_on, 0, bUseRenderSegs,
-                   FOREVER);
+    FOREVER);
 
   float fLevelsPerFrame = 0.0;
   if (bUseRenderSegs && inRenderMode)
     pBlock->GetValue(GhostTrails::pb_segsperframe_render, 0, fLevelsPerFrame,
-                     FOREVER);
+      FOREVER);
   else
     pBlock->GetValue(GhostTrails::pb_segsperframe, 0, fLevelsPerFrame, FOREVER);
 
@@ -624,7 +625,7 @@ BOOL gGetStartAndEndTimes(IParamBlock2* pBlock, Interval& curTime,
 // of the calculation at any point to another method.
 //
 class GTWorkingValues {
- public:
+public:
   GTWorkingValues() {}
 
   BOOL texturing;                  // Should UVs be generated for the mesh.
@@ -641,17 +642,17 @@ class GTWorkingValues {
   BOOL bEasyFade;        // ??
 
   std::vector<TimeValue>
-      caLevelTimes;       // The time (ticks) of each segment in the trail.
+    caLevelTimes;       // The time (ticks) of each segment in the trail.
   int nMotionlessLevels;  // Number of levels at the end of the trail that are
-                          // in the same location. This value used by stretch
-                          // mapping to correct UVs
+  // in the same location. This value used by stretch
+  // mapping to correct UVs
 
   double fOverlapPercentage;
   double fLevelsIfShowAll;
   TimeValue ticksStartTime;
   TimeValue ticksEndTime;
   TimeValue minTrailTime;  // minimum time at which we will generate a trail for
-                           // this frame.
+  // this frame.
 
   BOOL bUsingCache;  // ???
 
@@ -669,7 +670,7 @@ class GTWorkingValues {
   TimeValue t;  // The time (ticks) of mesh generation.
 
   ITrailSource*
-      trailSource;  // The source of the trails (spline animation or particles)
+    trailSource;  // The source of the trails (spline animation or particles)
 
   int numActiveTrails;  // The number of active (ie not stationary) trails
 
@@ -678,7 +679,7 @@ class GTWorkingValues {
   int skipParticle;   // every n'th particle...
   int startParticle;  // starting at particle m
 
- private:
+private:
   // don't allow object copies
   GTWorkingValues(const GTWorkingValues&);
   GTWorkingValues& operator=(const GTWorkingValues&);
@@ -687,7 +688,7 @@ class GTWorkingValues {
 // ----------------------------------------------------------------------------
 
 class GhostTrailsLocalModData : public LocalModData {
- public:
+public:
   GhostTrailsLocalModData();
   virtual ~GhostTrailsLocalModData() {}
 
@@ -727,7 +728,7 @@ Interval GhostTrails::GetValidity(TimeValue t) {
 // ----------------------------------------------------------------------------
 
 void GhostTrails::ModifyObject(TimeValue t, ModContext& mc, ObjectState* os,
-                               INode* node) {
+  INode* node) {
   LOGITM("Entering ModifyObject()");
 
   // LOGIT;
@@ -754,11 +755,11 @@ void GhostTrails::ModifyObject(TimeValue t, ModContext& mc, ObjectState* os,
     if (!mc.localData) {
       LOGITM("Making a new GhostTrailsLocalModData");
       mc.localData = new GhostTrailsLocalModData;  // 3dsmax is responsible for
-                                                   // deleting mc.localData.
+      // deleting mc.localData.
     }
 
     GhostTrailsLocalModData* gtLocalData =
-        (GhostTrailsLocalModData*)mc.localData;
+      (GhostTrailsLocalModData*)mc.localData;
 
     if (!gtLocalData->pNode) {
       LOGIT;
@@ -768,7 +769,7 @@ void GhostTrails::ModifyObject(TimeValue t, ModContext& mc, ObjectState* os,
 
     if (!gtLocalData->pNode)
       throw CModifyException();  // Can't find the node for some reason (should
-                                 // never happen).
+    // never happen).
 
     wv.theNode = gtLocalData->pNode;
 
@@ -814,7 +815,7 @@ void GhostTrails::ModifyObject(TimeValue t, ModContext& mc, ObjectState* os,
     wv.verts = wv.numActiveTrails * wv.levelVerts * (wv.caLevelTimes.size());
     wv.tVerts = wv.numActiveTrails * wv.caLevelTimes.size() * wv.levelTVerts;
     wv.faces =
-        wv.numActiveTrails * wv.levelFaces * (wv.caLevelTimes.size() - 1);
+      wv.numActiveTrails * wv.levelFaces * (wv.caLevelTimes.size() - 1);
 
     mesh.setNumVerts(wv.verts);
     mesh.setNumFaces(wv.faces);
@@ -861,7 +862,8 @@ void GhostTrails::ModifyObject(TimeValue t, ModContext& mc, ObjectState* os,
     LOGIT;
     os->obj->UnlockObject();
     LOGIT;
-  } catch (...) {
+  }
+  catch (...) {
     // something went wrong - just invalidate the object and return.
 
     LOGIT;
@@ -928,7 +930,7 @@ BOOL GhostTrails::isSkippedTrail(int nTrail, GTWorkingValues& wv) {
   if (((nTrail - startPart) % wv.skipParticle) != 0) return TRUE;
 
   if (wv.trailSource->isTrailStationary(nTrail, wv.minTrailTime, wv.t,
-                                        GetTicksPerFrame(), wv.caLevelTimes))
+    GetTicksPerFrame(), wv.caLevelTimes))
     return TRUE;
 
   return FALSE;
@@ -954,12 +956,12 @@ void GhostTrails::initializeWorkingValues(GTWorkingValues& wv) {
   int mt;
   pblock->GetValue(pb_maptype, wv.t, mt, FOREVER);
   switch (mt) {
-    case 0:
-      wv.mapType = eString;
-      break;
-    case 1:
-      wv.mapType = eStretch;
-      break;
+  case 0:
+    wv.mapType = eString;
+    break;
+  case 1:
+    wv.mapType = eStretch;
+    break;
   }
 
   LOGIT;
@@ -978,7 +980,7 @@ void GhostTrails::initializeWorkingValues(GTWorkingValues& wv) {
   wv.nSplineSegments = 6;
   BOOL bUseRenderSteps = FALSE;
   pblock->GetValue(GhostTrails::pb_splinesteps_render_on, 0, bUseRenderSteps,
-                   FOREVER);
+    FOREVER);
   if (bUseRenderSteps && inRenderMode)
     pblock->GetValue(pb_splinesteps_render, wv.t, wv.nSplineSegments, FOREVER);
   else
@@ -1042,7 +1044,8 @@ void GhostTrails::initializeWorkingValues(GTWorkingValues& wv) {
   if (IsParticleTrails()) {
     LOGIT;
     wv.trailSource = new ParticleTrailSource(&partState);
-  } else {
+  }
+  else {
     LOGIT;
     wv.trailSource = new SplineTrailSource(wv.theNode);
   }
@@ -1079,7 +1082,8 @@ void GhostTrails::buildMeshFaces(GTWorkingValues& wv) {
     MtlID mtlID = 0;
     if (wv.usePFlowMtlIDs) {
       mtlID = wv.trailSource->getTrailMtlID(nTrail);
-    } else {
+    }
+    else {
       mtlID = nTrail % wv.iNumMtlIDs;
     }
 
@@ -1092,7 +1096,7 @@ void GhostTrails::buildMeshFaces(GTWorkingValues& wv) {
       int segTVerts = pieces + 1;
 
       for (int level = 0; level < (float)wv.caLevelTimes.size() - 1;
-           ++level) {
+        ++level) {
         int sm = 0;  // Initial smoothing group
         BOOL firstSmooth = (line.pts[0].flags & POLYPT_SMOOTH) ? TRUE : FALSE;
 
@@ -1122,7 +1126,8 @@ void GhostTrails::buildMeshFaces(GTWorkingValues& wv) {
           if (!wv.flipNormals) {
             mesh.faces[face].setEdgeVisFlags(1, 1, 0);
             mesh.faces[face++].setVerts(v1, v2, v4);
-          } else {
+          }
+          else {
             mesh.faces[face].setEdgeVisFlags(0, 1, 1);
             mesh.faces[face++].setVerts(v1, v4, v2);
           }
@@ -1132,7 +1137,8 @@ void GhostTrails::buildMeshFaces(GTWorkingValues& wv) {
           if (!wv.flipNormals) {
             mesh.faces[face].setEdgeVisFlags(0, 1, 1);
             mesh.faces[face++].setVerts(v1, v4, v3);
-          } else {
+          }
+          else {
             mesh.faces[face].setEdgeVisFlags(1, 1, 0);
             mesh.faces[face++].setVerts(v1, v3, v4);
           }
@@ -1142,7 +1148,7 @@ void GhostTrails::buildMeshFaces(GTWorkingValues& wv) {
           if (wv.texturing) {
             // Where in the tvert array this trail's tverts start
             int baseTVert =
-                activeTrailCount * wv.caLevelTimes.size() * wv.levelTVerts;
+              activeTrailCount * wv.caLevelTimes.size() * wv.levelTVerts;
 
             // int tv1 = baseTVert + piece;
             int tv1 = baseTVert + ((pieces + 1) * level) + piece;
@@ -1158,7 +1164,8 @@ void GhostTrails::buildMeshFaces(GTWorkingValues& wv) {
             if (!wv.flipNormals) {
               mesh.tvFace[TVFaceCount++].setTVerts(tv1, tv2, tv4);
               mesh.tvFace[TVFaceCount++].setTVerts(tv1, tv4, tv3);
-            } else {
+            }
+            else {
               mesh.tvFace[TVFaceCount++].setTVerts(tv1, tv4, tv2);
               mesh.tvFace[TVFaceCount++].setTVerts(tv1, tv3, tv4);
             }
@@ -1169,7 +1176,7 @@ void GhostTrails::buildMeshFaces(GTWorkingValues& wv) {
 
             // where in the age tvert array this trail's tverts start
             int baseTVertAge =
-                activeTrailCount * wv.caLevelTimes.size() * wv.levelTVerts;
+              activeTrailCount * wv.caLevelTimes.size() * wv.levelTVerts;
 
             int atv1 = baseTVertAge + ((pieces + 1) * level) + piece;
             int atv2 = atv1 + 1;
@@ -1194,7 +1201,8 @@ void GhostTrails::buildMeshFaces(GTWorkingValues& wv) {
               if (!wv.flipNormals) {
                 ageFaces[ageTVFaceCount++].setTVerts(atv1, atv2, atv4);
                 ageFaces[ageTVFaceCount++].setTVerts(atv1, atv4, atv3);
-              } else {
+              }
+              else {
                 ageFaces[ageTVFaceCount++].setTVerts(atv1, atv4, atv2);
                 ageFaces[ageTVFaceCount++].setTVerts(atv1, atv3, atv4);
               }
@@ -1206,8 +1214,8 @@ void GhostTrails::buildMeshFaces(GTWorkingValues& wv) {
         // baseTVert += segTVerts;
       }
       baseVert += segVerts;  // Increment to next poly start (skips last verts
-                             // of this poly)
-                             // baseTVert += segTVerts;
+      // of this poly)
+      // baseTVert += segTVerts;
     }
 
     activeTrailCount++;
@@ -1227,9 +1235,9 @@ void GhostTrails::calculateTrailTimes(GTWorkingValues& wv) {
     // Calculate times for normal trails.
 
 
-    BOOL bRes = gGetStartAndEndTimes(pblock, (Interval &)GetCOREInterface()->GetAnimRange(),
-                                     &wv.ticksStartTime, &wv.ticksEndTime, NULL,
-                                     NULL, inRenderMode);
+    BOOL bRes = gGetStartAndEndTimes(pblock, (Interval&)GetCOREInterface()->GetAnimRange(),
+      &wv.ticksStartTime, &wv.ticksEndTime, NULL,
+      NULL, inRenderMode);
 
     // No idea why the time had to be within the active range, commenting it out
     // as we can be outside the range when rendering super-sampling for image
@@ -1244,14 +1252,14 @@ void GhostTrails::calculateTrailTimes(GTWorkingValues& wv) {
     // a) get levelsPerFrame
     BOOL bUseRenderSegs = FALSE;
     pblock->GetValue(GhostTrails::pb_segsperframe_render_on, 0, bUseRenderSegs,
-                     FOREVER);
+      FOREVER);
     if (bUseRenderSegs && inRenderMode)
       pblock->GetValue(pb_segsperframe_render, 0, fLevelsPerFrame, FOREVER);
     else
       pblock->GetValue(pb_segsperframe, 0, fLevelsPerFrame, FOREVER);
 
-// b) get numFrames  - it *could* be animated
-#if MAX_RELEASE >= MAX_RELEASE_R14
+    // b) get numFrames  - it *could* be animated
+#if MAX_RELEASE_R14
     if (pblock->GetControllerByID(pb_frames))  // does it have a controller
     {
       BOOL retVal = pblock->GetValue(pb_frames, wv.t, numFrames, FOREVER);
@@ -1281,20 +1289,21 @@ void GhostTrails::calculateTrailTimes(GTWorkingValues& wv) {
       wv.minTrailTime = wv.t;
       wv.fLevelsIfShowAll = 2;
       wv.fOverlapPercentage = 0.0f;
-    } else {
+    }
+    else {
       // Count how many levels?
       float fLevels = numFrames * fLevelsPerFrame;
       for (int level = 0; (float)level <= fLevels; ++level) {
         // Get the time for this level.
         TimeValue levelTime = static_cast<TimeValue>(
-            wv.t - (level * 1.0f / fLevelsPerFrame * GetTicksPerFrame()));
+          wv.t - (level * 1.0f / fLevelsPerFrame * GetTicksPerFrame()));
         wv.minTrailTime = levelTime;
         wv.caLevelTimes.push_back(levelTime);
       }
 
       // always add an overlap.
       wv.minTrailTime =
-          wv.t - static_cast<TimeValue>(numFrames * GetTicksPerFrame());
+        wv.t - static_cast<TimeValue>(numFrames * GetTicksPerFrame());
       if (wv.caLevelTimes.size() > 0) {
         if (wv.minTrailTime != wv.caLevelTimes[wv.caLevelTimes.size() - 1])
           wv.caLevelTimes.push_back(wv.minTrailTime);
@@ -1304,7 +1313,8 @@ void GhostTrails::calculateTrailTimes(GTWorkingValues& wv) {
       wv.fOverlapPercentage = fLevels - (int)fLevels;
     }
 
-  } else {
+  }
+  else {
     // Build time list for anchored trails.
 
     // Carefully calculate the variables from param block
@@ -1312,18 +1322,18 @@ void GhostTrails::calculateTrailTimes(GTWorkingValues& wv) {
     double fTicksPerLevel = 1.0;
 
     BOOL bRes1 = gGetStartAndEndTimes(
-        pblock, (Interval &)GetCOREInterface()->GetAnimRange(), &wv.ticksStartTime, NULL,
-        &wv.fLevelsIfShowAll, NULL, inRenderMode);
+      pblock, (Interval&)GetCOREInterface()->GetAnimRange(), &wv.ticksStartTime, NULL,
+      &wv.fLevelsIfShowAll, NULL, inRenderMode);
     Interval curTime(wv.ticksStartTime, wv.t);
     BOOL bRes2 = gGetStartAndEndTimes(pblock, curTime, &wv.ticksStartTime,
-                                      &wv.ticksEndTime, &fLevels,
-                                      &fTicksPerLevel, inRenderMode);
+      &wv.ticksEndTime, &fLevels,
+      &fTicksPerLevel, inRenderMode);
 
     if (bRes1 == FALSE || bRes2 == FALSE) throw CModifyException();
 
     for (int level = 0; level <= fLevels; ++level) {
       TimeValue levelTime =
-          wv.ticksStartTime + static_cast<TimeValue>(level * fTicksPerLevel);
+        wv.ticksStartTime + static_cast<TimeValue>(level * fTicksPerLevel);
       wv.caLevelTimes.push_back(levelTime);
     }
 
@@ -1350,7 +1360,7 @@ void GhostTrails::calculateTrailTimes(GTWorkingValues& wv) {
     int cacheCount = this->caElimVStretchCache.size();
 
     wv.bUsingCache =
-        ((levelCount <= cacheCount) && wv.bIsPathAnchored) ? TRUE : FALSE;
+      ((levelCount <= cacheCount) && wv.bIsPathAnchored) ? TRUE : FALSE;
 
     // if(!wv.bUsingCache)
     //{
@@ -1371,6 +1381,11 @@ void GhostTrails::calculateTrailTimes(GTWorkingValues& wv) {
 }
 
 // ----------------------------------------------------------------------------
+// std::clamp template for VS2015/3ds Max2018 and lower
+template <typename T> T CLAMP(const T& value, const T& low, const T& high)
+{
+  return value < low ? low : (value > high ? high : value);
+}
 
 void GhostTrails::buildMeshUVAgeVertices(GTWorkingValues& wv) {
   //
@@ -1395,40 +1410,48 @@ void GhostTrails::buildMeshUVAgeVertices(GTWorkingValues& wv) {
   int vertCount = 0;
 
   for (int trailIdx = 0; trailIdx < wv.trailSource->numTrails();
-       trailIdx++)  // for each trail...
+    trailIdx++)  // for each trail...
   {
     // skip stationary trails.
     if (isSkippedTrail(trailIdx, wv)) continue;
 
     for (int vv = 0; vv < numTimes;
-         vv++)  // for each segment along the trail...
+      vv++)  // for each segment along the trail...
     {
       for (int uu = 0; uu < wv.levelTVerts; uu++)  // for each spline step...
       {
-        UVVert uv; 
+        UVVert uv;
 
         if (wv.levelTVerts > 1) {
           uv.x = wv.fURepeat * (float)uu / (float)(wv.levelTVerts - 1);
-        } else
+        }
+        else
           uv.x = 0.0f;
 
         if (numTimes > 1) {
           TimeValue currentTime = wv.caLevelTimes[vv];
           TimeValue trailAgeAtTime =
-              wv.trailSource->getTrailAgeAtTime(trailIdx, currentTime);
+            wv.trailSource->getTrailAgeAtTime(trailIdx, currentTime);
           TimeValue trailLifetime = wv.trailSource->getTrailLifeTime(trailIdx);
 
           if (trailAgeAtTime < 0) {
             // we're outside the lifetime of the particle - after it died in
             // other words
             uv.y = 1.0f;
-          } else if (trailLifetime != 0) {
+          }
+          else if (trailLifetime != 0) {
             uv.y = (float)trailAgeAtTime / (float)trailLifetime;
-          } else
+          }
+          else
             uv.y = 0.0f;
 
           // It's 0.99 instead of 1.0 to try and prevent wrap-around errors.
+#if MAX_RELEASE_R22
           uv.y = std::clamp(uv.y, 0.0f, 0.99f);
+#else
+          // no std::clamp in VS2015.2 and earlier so we use our own template
+          uv.y = CLAMP(uv.y, 0.0f, 0.99f);
+#endif
 
           /*// work out how far along the length this level is (in time)
           TimeValue startTime	= wv.caLevelTimes[0];
@@ -1443,7 +1466,8 @@ void GhostTrails::buildMeshUVAgeVertices(GTWorkingValues& wv) {
 
           uv.y = vValue;
           */
-        } else
+        }
+        else
           uv.y = 0.0f;
 
         uv.z = 0.0f;
@@ -1475,7 +1499,7 @@ void GhostTrails::buildMeshUVVertices(GTWorkingValues& wv) {
   Mesh& mesh = wv.tri->GetMesh();
 
   for (int trailIdx = 0; trailIdx < wv.trailSource->numTrails();
-       trailIdx++)  // for each trail...
+    trailIdx++)  // for each trail...
   {
     // skip stationary trails.
     if (isSkippedTrail(trailIdx, wv)) continue;
@@ -1486,7 +1510,7 @@ void GhostTrails::buildMeshUVVertices(GTWorkingValues& wv) {
     if (wv.mapType == GhostTrails::eStretch) {
       bIsStretchMapping = true;
       nStationaryLevels =
-          wv.trailSource->getNumStationaryLevels(trailIdx, wv.caLevelTimes);
+        wv.trailSource->getNumStationaryLevels(trailIdx, wv.caLevelTimes);
     }
 
     for (int poly = 0; poly < wv.polys; ++poly) {
@@ -1537,44 +1561,49 @@ void GhostTrails::buildMeshUVVertices(GTWorkingValues& wv) {
             // parameterization may not be even  so, for this special case we
             // FULLY CALCULATE IT.
             TimeValue distanceStep =
-                abs((wv.caLevelTimes[level - 1] - wv.caLevelTimes[level]) / 5);
+              abs((wv.caLevelTimes[level - 1] - wv.caLevelTimes[level]) / 5);
             double fDistanceBeyondLevel = GetDistanceOverRange(
-                wv.theNode, wv.caLevelTimes[level - 1], wv.t, distanceStep);
+              wv.theNode, wv.caLevelTimes[level - 1], wv.t, distanceStep);
             double fDistanceToNextLevel =
-                GetDistanceOverRange(wv.theNode, wv.caLevelTimes[level - 1],
-                                     wv.caLevelTimes[level], distanceStep);
+              GetDistanceOverRange(wv.theNode, wv.caLevelTimes[level - 1],
+                wv.caLevelTimes[level], distanceStep);
 
             if (MaxUtils::fpEquals(fDistanceToNextLevel, 0.0))
               tV = caElimVStretchCache[level - 1];
             else
               tV = caElimVStretchCache[level - 1] +
-                   fDistanceBeyondLevel / fDistanceToNextLevel *
-                       (caElimVStretchCache[level] -
-                        caElimVStretchCache[level - 1]);
-          } else {
+              fDistanceBeyondLevel / fDistanceToNextLevel *
+              (caElimVStretchCache[level] -
+                caElimVStretchCache[level - 1]);
+          }
+          else {
             if (wv.bUsingCache)  // anchored trails.
             {
               tV = caElimVStretchCache[level];
-            } else {
+            }
+            else {
               if (bIsStretchMapping) {
                 // TODO
                 if (level >=
-                    (wv.caLevelTimes.size() - 1 - nStationaryLevels))
+                  (wv.caLevelTimes.size() - 1 - nStationaryLevels))
                   tV = 1.0f;
                 else
                   tV = ((float)level) /
-                       (wv.fLevelsIfShowAll - nStationaryLevels);
+                  (wv.fLevelsIfShowAll - nStationaryLevels);
 
-              } else {
+              }
+              else {
                 if (level == (wv.caLevelTimes.size() - 1)) {
                   tV = (level - wv.fOverlapPercentage) / wv.fLevelsIfShowAll;
-                } else {
+                }
+                else {
                   tV = ((float)level) / wv.fLevelsIfShowAll;
                 }
               }
             }
           }
-        } else {
+        }
+        else {
           // OLD CODE FOR THE one texture repeat per segment system.
           tV = (float)level * wv.fVRepeat;
           if (level == wv.caLevelTimes.size() - 1) {
@@ -1635,17 +1664,17 @@ void GhostTrails::buildMeshVertices(GTWorkingValues& wv) {
         // Get the node TM for this level.
         TimeValue levelTime = wv.caLevelTimes[level];
         Matrix3 levelLTM = wv.trailSource->getTrailTM(
-            nTrail, levelTime,
-            wv.caLevelTimes);  // theNode->GetObjectTM(levelTime);
+          nTrail, levelTime,
+          wv.caLevelTimes);  // theNode->GetObjectTM(levelTime);
 
         // Rotate the particle splines of non-particle flow particle systems
         // to follow the path of the particle. We have to do this because the
         // maxscript interface to 3dsmax4-style particle systems only returns
         // positions to us.
         if (IsParticleTrails() &&
-            (partState.getSourceSystemType() !=
-             ParticleSystemState::PS_PARTICLEFLOW) &&
-            (wv.caLevelTimes.size() > 0)) {
+          (partState.getSourceSystemType() !=
+            ParticleSystemState::PS_PARTICLEFLOW) &&
+          (wv.caLevelTimes.size() > 0)) {
           AffineParts aa;
           decomp_affine(levelLTM, &aa);
           Point3 keyPos = aa.t;
@@ -1661,20 +1690,22 @@ void GhostTrails::buildMeshVertices(GTWorkingValues& wv) {
           if (level == 0) {
             // First key
             Point3 nextKeyPos = getNextDifferentKeyPos(
-                wv.trailSource, nTrail, wv.caLevelTimes, level, 1);
+              wv.trailSource, nTrail, wv.caLevelTimes, level, 1);
 
             keyTangent = nextKeyPos - keyPos;
-          } else if (level == (wv.caLevelTimes.size() - 1)) {
+          }
+          else if (level == (wv.caLevelTimes.size() - 1)) {
             // last key
             Point3 previousKeyPos = getNextDifferentKeyPos(
-                wv.trailSource, nTrail, wv.caLevelTimes, level, -1);
+              wv.trailSource, nTrail, wv.caLevelTimes, level, -1);
 
             keyTangent = keyPos - previousKeyPos;
-          } else {
+          }
+          else {
             Point3 nextKeyPos = getNextDifferentKeyPos(
-                wv.trailSource, nTrail, wv.caLevelTimes, level, 1);
+              wv.trailSource, nTrail, wv.caLevelTimes, level, 1);
             Point3 previousKeyPos = getNextDifferentKeyPos(
-                wv.trailSource, nTrail, wv.caLevelTimes, level, -1);
+              wv.trailSource, nTrail, wv.caLevelTimes, level, -1);
 
             keyTangent = nextKeyPos - previousKeyPos;
           }
@@ -1698,9 +1729,9 @@ void GhostTrails::buildMeshVertices(GTWorkingValues& wv) {
         PolyLine& linet = pShapet.lines[poly];
 
         Point3 offset =
-            Point3(0.0f, 0.0f,
-                   baseZ + (float)level / (float)wv.caLevelTimes.size() -
-                       1 * zSize);
+          Point3(0.0f, 0.0f,
+            baseZ + (float)level / (float)wv.caLevelTimes.size() -
+            1 * zSize);
 
         for (int v = 0; v < lverts; ++v) {
           Point3 p0 = line.pts[v].p * level0TM;
@@ -1710,7 +1741,7 @@ void GhostTrails::buildMeshVertices(GTWorkingValues& wv) {
           offset = -offset;
 
           line.pts[v].aux =
-              vert;  // Gives the capper this vert's location in the mesh!
+            vert;  // Gives the capper this vert's location in the mesh!
           mesh.setVert(vert++, linet.pts[v].p * levelLTM * Inverse(level0TM));
         }
       }
@@ -1732,8 +1763,8 @@ void GhostTrails::buildMeshVertices(GTWorkingValues& wv) {
 // step == -1  : get the previous key
 //
 Point3 GhostTrails::getNextDifferentKeyPos(
-    ITrailSource* pTrailSource, int nTrail,
-    std::vector<TimeValue>& levelTimes, int currentIdx, int step) {
+  ITrailSource* pTrailSource, int nTrail,
+  std::vector<TimeValue>& levelTimes, int currentIdx, int step) {
   if (!pTrailSource) {
     return Point3(0.0f, 0.0f, 0.0f);
   }
@@ -1742,7 +1773,7 @@ Point3 GhostTrails::getNextDifferentKeyPos(
   AffineParts cAA;
 
   Matrix3 curTM = pTrailSource->getTrailTM(nTrail, levelTimes[currentIdx],
-                                           levelTimes);
+    levelTimes);
   decomp_affine(curTM, &cAA);
 
   curPoint = cAA.t;
@@ -1752,7 +1783,7 @@ Point3 GhostTrails::getNextDifferentKeyPos(
 
   while ((workingIdx >= 0) && (workingIdx < levelTimes.size())) {
     Matrix3 workingTM = pTrailSource->getTrailTM(
-        nTrail, levelTimes[workingIdx], levelTimes);
+      nTrail, levelTimes[workingIdx], levelTimes);
     AffineParts wAA;
     decomp_affine(workingTM, &wAA);
     workingPoint = wAA.t;
@@ -1768,7 +1799,7 @@ Point3 GhostTrails::getNextDifferentKeyPos(
 // ----------------------------------------------------------------------------
 
 void GhostTrails::BeginEditParams(IObjParam* ip, ULONG flags,
-                                  Animatable* prev) {
+  Animatable* prev) {
   // LOGIT;
   this->ip = ip;
   GhostTrailsDesc.BeginEditParams(ip, this, flags, prev);
@@ -1777,15 +1808,15 @@ void GhostTrails::BeginEditParams(IObjParam* ip, ULONG flags,
   for (int i = 0; i < NUM_ROLLUPS; i++) rollupHandles[i] = 0;
 
   ghosttrails_param_blk.SetUserDlgProc(
-      ghosttrails_map_main, new GhostTrailsDlgProc(this, ghosttrails_map_main));
+    ghosttrails_map_main, new GhostTrailsDlgProc(this, ghosttrails_map_main));
   ghosttrails_param_blk.SetUserDlgProc(
-      ghosttrails_map_meshparams,
-      new GhostTrailsDlgProc(this, ghosttrails_map_meshparams));
+    ghosttrails_map_meshparams,
+    new GhostTrailsDlgProc(this, ghosttrails_map_meshparams));
   ghosttrails_param_blk.SetUserDlgProc(
-      ghosttrails_map_apply,
-      new GhostTrailsDlgProc(this, ghosttrails_map_apply));
+    ghosttrails_map_apply,
+    new GhostTrailsDlgProc(this, ghosttrails_map_apply));
   ghosttrails_param_blk.SetUserDlgProc(
-      ghosttrails_particle, new GhostTrailsDlgProc(this, ghosttrails_particle));
+    ghosttrails_particle, new GhostTrailsDlgProc(this, ghosttrails_particle));
   // LOGIT;
 }
 
@@ -1801,14 +1832,14 @@ void GhostTrails::EndEditParams(IObjParam* ip, ULONG flags, Animatable* next) {
 // ----------------------------------------------------------------------------
 
 // From ReferenceMaker
-#if MAX_RELEASE >= MAX_RELEASE_R17
+#if MAX_RELEASE_R17
 RefResult GhostTrails::NotifyRefChanged(const Interval& changeInt,
-                                        RefTargetHandle hTarget, PartID& partID,
-                                        RefMessage message, BOOL propagate)
+  RefTargetHandle hTarget, PartID& partID,
+  RefMessage message, BOOL propagate)
 #else
 RefResult GhostTrails::NotifyRefChanged(Interval changeInt,
-                                        RefTargetHandle hTarget, PartID& partID,
-                                        RefMessage message)
+  RefTargetHandle hTarget, PartID& partID,
+  RefMessage message)
 #endif
 {
   LOGIT;
@@ -1821,51 +1852,53 @@ RefResult GhostTrails::NotifyRefChanged(Interval changeInt,
       hTarget->GetClassName(s);
       char* converted = MaxUtils::wcharToChar(s.data());
       sprintf(dbgstr, "hTarget is a %s, msg = %09X, part = %llu", converted,
-              message, partID);
+        message, partID);
       delete converted;
       LOGITM(dbgstr);
-    } else {
+    }
+    else {
       sprintf(dbgstr, "hTarget is NULL. msg = %09X, part = %llu", message,
-              partID);
+        partID);
       LOGITM(dbgstr);
     }
   }
 
   switch (message) {
-    case REFMSG_CHANGE:
+  case REFMSG_CHANGE:
 
+    LOGIT;
+    // see if this message came from a changing parameter in the pblock,
+    if (hTarget == pblock) {
       LOGIT;
-      // see if this message came from a changing parameter in the pblock,
-      if (hTarget == pblock) {
-        LOGIT;
-        ParamID changing_param = pblock->LastNotifyParamID();
-        LOGIT;
+      ParamID changing_param = pblock->LastNotifyParamID();
+      LOGIT;
 
-        if (changing_param == GhostTrails::pb_particle_node) {
-          // We don't need to propagate changes when the particle system
-          // reference changes as it doesn't actually change the state of the
-          // object.
-          LOGITM("REF_STOP");
-          return REF_STOP;
-        } else {
-          LOGIT;
-          return REF_SUCCEED;
-        }
+      if (changing_param == GhostTrails::pb_particle_node) {
+        // We don't need to propagate changes when the particle system
+        // reference changes as it doesn't actually change the state of the
+        // object.
+        LOGITM("REF_STOP");
+        return REF_STOP;
       }
+      else {
+        LOGIT;
+        return REF_SUCCEED;
+      }
+    }
 
-      break;
+    break;
 
-    case REFMSG_OBJECT_CACHE_DUMPED:
-      // Dependents don't need to know about cache changes as the external
-      // representation of the object hasn't changed. Adding this prevents
-      // weird crashes during rendering when the referenced particle system
-      // sends this message over and over.
-      LOGITM("REFMSG_OBJECT_CACHE_DUMPED");
-      return REF_STOP;
+  case REFMSG_OBJECT_CACHE_DUMPED:
+    // Dependents don't need to know about cache changes as the external
+    // representation of the object hasn't changed. Adding this prevents
+    // weird crashes during rendering when the referenced particle system
+    // sends this message over and over.
+    LOGITM("REFMSG_OBJECT_CACHE_DUMPED");
+    return REF_STOP;
 
-    case REFMSG_WANT_SHOWPARAMLEVEL:
-      LOGITM("REFMSG_WANT_SHOWPARAMLEVEL");
-      return REF_STOP;
+  case REFMSG_WANT_SHOWPARAMLEVEL:
+    LOGITM("REFMSG_WANT_SHOWPARAMLEVEL");
+    return REF_STOP;
   }
   LOGIT;
   return (REF_SUCCEED);
@@ -1906,8 +1939,8 @@ IOResult GhostTrails::Save(ISave* isave) {
 
 // ----------------------------------------------------------------------------
 
-#if MAX_RELEASE >= MAX_RELEASE_R15
-#if MAX_RELEASE >= MAX_RELEASE_R24
+#if MAX_RELEASE_R15
+#if MAX_RELEASE_R24
 const TCHAR* GhostTrails::GetObjectName(bool isLocalized) const
 #else
 const MCHAR* GhostTrails::GetObjectName()
@@ -1952,7 +1985,7 @@ SClass_ID GhostTrails::SuperClassID() { return OSM_CLASS_ID; }
 
 // ----------------------------------------------------------------------------
 
-#if MAX_RELEASE >= MAX_RELEASE_R24
+#if MAX_RELEASE_R24
 void GhostTrails::GetClassName(MSTR& s, bool localized) const { s = localized ? GetString(IDS_CLASS_NAME) : _T("GhostTrails"); }
 
 #else
@@ -1965,7 +1998,7 @@ int GhostTrails::NumSubs() { return 1; }
 
 // ----------------------------------------------------------------------------
 
-#if MAX_RELEASE >= MAX_RELEASE_R24
+#if MAX_RELEASE_R24
 TSTR GhostTrails::SubAnimName(int i, BOOL isLocalized) { return GetString(IDS_PARAMS1); }
 #else
 TSTR GhostTrails::SubAnimName(int i) { return GetString(IDS_PARAMS1); }
@@ -2085,7 +2118,7 @@ INode* GhostTrails::GetNode() {
 // ----------------------------------------------------------------------------
 
 BOOL GhostTrails::GetShapeAtTime(INode* theNode, PolyShape& theShape,
-                                 TimeValue tim, int splineSteps) {
+  TimeValue tim, int splineSteps) {
   LOGITM("Entering GetShapeAtTime()");
   // evaluate the spline shape just below the GT modifier
 
@@ -2148,13 +2181,15 @@ BOOL GhostTrails::GetShapeAtTime(INode* theNode, PolyShape& theShape,
     // the one below the GT modifier we know it resolves to a spline.
     // LOGIT;
     os = pFoundDerObj->GetObjRef()->Eval(tim);
-  } else {
+  }
+  else {
     // Case #2: There is more than one mod on this object so we want to
     // eval from the one below the GT
     if ((GTModIdx + 1) < numMods) {
       // LOGIT;
       os = pFoundDerObj->Eval(tim, GTModIdx + 1);
-    } else {
+    }
+    else {
       // LOGIT;
       os = pFoundDerObj->GetObjRef()->Eval(tim);
     }
@@ -2188,15 +2223,15 @@ BOOL GhostTrails::GetShapeAtTime(INode* theNode, PolyShape& theShape,
 BOOL GhostTrailsDlgProc::Apply(HWND hWnd) {
   BOOL bTex;
   ssm->pblock->GetValue(GhostTrails::pb_apply_tex_b, TimeValue(0), bTex,
-                        FOREVER);
+    FOREVER);
 
   float fVRepeat = 1.0;
   ssm->pblock->GetValue(GhostTrails::pb_apply_tex_vrepeat, TimeValue(0),
-                        fVRepeat, FOREVER);
+    fVRepeat, FOREVER);
 
   BOOL bFade;
   ssm->pblock->GetValue(GhostTrails::pb_apply_fade_b, TimeValue(0), bFade,
-                        FOREVER);
+    FOREVER);
 
   int iFadeStyle = 1;
   // ssm->pblock->GetValue(pb_apply_fade_inout, TimeValue(0), iFadeStyle,
@@ -2204,7 +2239,7 @@ BOOL GhostTrailsDlgProc::Apply(HWND hWnd) {
 
   float fFadeMidpoint = 1.0;
   ssm->pblock->GetValue(GhostTrails::pb_apply_fade_mp, TimeValue(0),
-                        fFadeMidpoint, FOREVER);
+    fFadeMidpoint, FOREVER);
 
   BOOL bTextureSet = FALSE;
 
@@ -2216,22 +2251,23 @@ BOOL GhostTrailsDlgProc::Apply(HWND hWnd) {
     if (!pMtl) {
       pMtl = NewDefaultStdMat();
       pMtl->SetName(_T("GhostTrails"));
-    } else if (pMtl && pMtl->GetSubTexmap(ID_OP) &&
-               _tcsstr(pMtl->GetName(), _T("GhostTrails"))) {
+    }
+    else if (pMtl && pMtl->GetSubTexmap(ID_OP) &&
+      _tcsstr(pMtl->GetName(), _T("GhostTrails"))) {
       int retval =
-          MessageBox(hWnd, _T("Do you wish to Overwrite the opacity map of "),
-                     _T("Overwrite"), MB_YESNOCANCEL);
+        MessageBox(hWnd, _T("Do you wish to Overwrite the opacity map of "),
+          _T("Overwrite"), MB_YESNOCANCEL);
       switch (retval) {
-        case IDCANCEL:
-          return FALSE;
-        case IDNO:
-          pMtl = NULL;
+      case IDCANCEL:
+        return FALSE;
+      case IDNO:
+        pMtl = NULL;
       };
     }
 
     if (pMtl) {
       // pDefBmpTex->BitmapLoadDlg();
-      TCHAR buffer[MAX_PATH] = {0};
+      TCHAR buffer[MAX_PATH] = { 0 };
 
       //_tcscpy(buffer, ssm->ip->GetDir(APP_MATLIB_DIR) );
       // TCHAR* pValue = NULL;
@@ -2248,8 +2284,8 @@ BOOL GhostTrailsDlgProc::Apply(HWND hWnd) {
       {
         if (!pDefBmpTex) {
           int retval =
-              MessageBox(hWnd, _T("Failed to create texture of bitmap"),
-                         _T("Failed"), MB_OK);
+            MessageBox(hWnd, _T("Failed to create texture of bitmap"),
+              _T("Failed"), MB_OK);
           return FALSE;
         }
         StdUVGen* pUVGen = NULL;
@@ -2264,14 +2300,14 @@ BOOL GhostTrailsDlgProc::Apply(HWND hWnd) {
 
         // Set and validate
         pDefBmpTex->SetMapName(buffer);
-#if MAX_RELEASE >= MAX_RELEASE_R15
+#if MAX_RELEASE_R15
         const MCHAR* testName = pDefBmpTex->GetMapName();
 #else
         TCHAR* testName = pDefBmpTex->GetMapName();
 #endif
         if (0) {  //_tcscmp(buffer, testName)!=0){
           int retval = MessageBox(hWnd, _T("Failed to set path of texture"),
-                                  _T("Failed"), MB_OK);
+            _T("Failed"), MB_OK);
           return FALSE;
         }
 
@@ -2302,16 +2338,17 @@ BOOL GhostTrailsDlgProc::Apply(HWND hWnd) {
     if (!pMtl) {
       pMtl = NewDefaultStdMat();
       pMtl->SetName(_T("GhostTrails"));
-    } else if (pMtl && pMtl->GetSubTexmap(ID_OP) &&
-               _tcsstr(pMtl->GetName(), _T("GhostTrails"))) {
+    }
+    else if (pMtl && pMtl->GetSubTexmap(ID_OP) &&
+      _tcsstr(pMtl->GetName(), _T("GhostTrails"))) {
       int retval =
-          MessageBox(hWnd, _T("Do you wish to Overwrite the opacity map of "),
-                     _T("Overwrite"), MB_YESNOCANCEL);
+        MessageBox(hWnd, _T("Do you wish to Overwrite the opacity map of "),
+          _T("Overwrite"), MB_YESNOCANCEL);
       switch (retval) {
-        case IDCANCEL:
-          return FALSE;
-        case IDNO:
-          pMtl = NULL;
+      case IDCANCEL:
+        return FALSE;
+      case IDNO:
+        pMtl = NULL;
       };
     }
 
@@ -2328,7 +2365,8 @@ BOOL GhostTrailsDlgProc::Apply(HWND hWnd) {
         pGradTex->SetColor(1, Color(0, 0, 0), TimeValue(1));
         pGradTex->SetColor(2, Color(0, 0, 0), TimeValue(1));
 
-      } else {
+      }
+      else {
         pGradTex->SetNumSubTexmaps(3);
         pGradTex->SetColor(0, Color(0, 0, 0), TimeValue(1));
         pGradTex->SetColor(1, Color(0, 0, 0), TimeValue(1));
@@ -2353,10 +2391,11 @@ BOOL GhostTrailsDlgProc::Apply(HWND hWnd) {
   if (bTextureSet) {
     if (bTextureSet == 1) {
       MessageBox(hWnd, _T("Effects have been successfully applied"),
-                 _T("Success"), MB_OK);
-    } else {
+        _T("Success"), MB_OK);
+    }
+    else {
       MessageBox(hWnd, _T("Effects have been successfully applied"),
-                 _T("Success"), MB_OK);
+        _T("Success"), MB_OK);
     }
   }
 
@@ -2385,8 +2424,8 @@ int GhostTrails::ElimVStretch(GTWorkingValues& wv) {
   double fTicksPerLevel = 1.0;
   double fLevels = 1.0;
   BOOL bRes =
-      gGetStartAndEndTimes(pblock, animRange, &ticksStartFrame, &ticksEndFrame,
-                           &fLevels, &fTicksPerLevel, inRenderMode);
+    gGetStartAndEndTimes(pblock, animRange, &ticksStartFrame, &ticksEndFrame,
+      &fLevels, &fTicksPerLevel, inRenderMode);
 
   if (bRes == FALSE) {
     return 2;
@@ -2402,7 +2441,7 @@ int GhostTrails::ElimVStretch(GTWorkingValues& wv) {
 
   // Get total distance
   double fTotalDistance = GetDistanceOverRange(wv.theNode, ticksStartFrame,
-                                               ticksEndFrame, distanceStep);
+    ticksEndFrame, distanceStep);
 
   // Reset the cache
   caElimVStretchCache.clear();
@@ -2419,11 +2458,11 @@ int GhostTrails::ElimVStretch(GTWorkingValues& wv) {
         lastLevelTime = wv.caLevelTimes[level - 1];
 
       double percentage = static_cast<double>(level) /
-                          static_cast<double>(wv.caLevelTimes.size());
+        static_cast<double>(wv.caLevelTimes.size());
 
       if (!MaxUtils::fpEquals(fTotalDistance, 0.0)) {
         double fDistanceAtLevel = GetDistanceOverRange(
-            wv.theNode, lastLevelTime, levelTime, distanceStep);
+          wv.theNode, lastLevelTime, levelTime, distanceStep);
         accumulatedDistance += fDistanceAtLevel;
         percentage = accumulatedDistance / fTotalDistance;
       }
@@ -2451,7 +2490,7 @@ int GhostTrails::ElimVStretch(GTWorkingValues& wv) {
 // Calculate by summing linear segments of duration "step".
 //
 double GhostTrails::GetDistanceOverRange(INode* pNode, TimeValue start,
-                                         TimeValue end, TimeValue step) {
+  TimeValue end, TimeValue step) {
   // INode* pNode = GetNode();
 
   // sanity checks
@@ -2519,7 +2558,7 @@ BOOL GhostTrails::IsParticleTrails() {
   // enabled for this modifier, FALSE otherwise
   BOOL bIsParticle = FALSE;
   if (pblock && pblock->GetValue(pb_particle_trails_b, TimeValue(0),
-                                 bIsParticle, FOREVER))
+    bIsParticle, FOREVER))
     return bIsParticle;
   return FALSE;
 }
@@ -2565,8 +2604,8 @@ void GhostTrails::RecalculateParticleTrails(HWND hWndButton) {
   NullProgress nullProgress;
   ButtonProgress buttonProgress(hWndButton);
   ParticleStateBuilder::buildState(partState, pParticleNode, animRange.Start(),
-                                   animRange.End(), GetTicksPerFrame(),
-                                   &buttonProgress, pEventList);
+    animRange.End(), GetTicksPerFrame(),
+    &buttonProgress, pEventList);
 
   // DlgProgress dlgProgress(&partState, animRange, pParticleNode, pEventList,
   // limited);  dlgProgress.doRecalc();
@@ -2585,22 +2624,22 @@ void GhostTrails::SnapToSpline() {
     partState.makeTestSpline(_T("GTSpline"));
   else {
     MessageBox(GetCOREInterface()->GetMAXHWnd(), _T("No particle animation."),
-               _T("Ghost Trails"), MB_OK);
+      _T("Ghost Trails"), MB_OK);
   }
 }
 
 // ----------------------------------------------------------------------------
 
 void GhostTrails::NotifyInputChanged(Interval changeInt, PartID partID,
-                                     RefMessage message, ModContext* mc) {}
+  RefMessage message, ModContext* mc) {}
 
 // ----------------------------------------------------------------------------
 
 static FPInterfaceDesc gt_mixininterface(GT_FO_INTERFACE, _T("foo"), 0,
-                                         &GhostTrailsDesc, FP_MIXIN,
-                                         gt_regen_particle_trails,
-                                         _T("regenerate_particle_trails"), 0,
-                                         TYPE_VOID, 0, 0, p_end);
+  &GhostTrailsDesc, FP_MIXIN,
+  gt_regen_particle_trails,
+  _T("regenerate_particle_trails"), 0,
+  TYPE_VOID, 0, 0, p_end);
 
 // ----------------------------------------------------------------------------
 

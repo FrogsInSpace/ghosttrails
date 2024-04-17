@@ -117,8 +117,8 @@ class GhostTrails : public Modifier, public GTInterface {
   static HWND rollupHandles[NUM_ROLLUPS];
 
 // From Animatable
-#if MAX_RELEASE >= MAX_RELEASE_R15
-#if MAX_RELEASE >= MAX_RELEASE_R24
+#if MAX_RELEASE_R15
+#if MAX_RELEASE_R24
   const TCHAR* GetObjectName(bool localized) const override;
 #else
   const TCHAR* GetObjectName();
@@ -157,7 +157,7 @@ class GhostTrails : public Modifier, public GTInterface {
   // From Animatable
   Class_ID ClassID();
   SClass_ID SuperClassID();
-#if MAX_RELEASE >= MAX_RELEASE_R24
+#if MAX_RELEASE_R24
   void GetClassName(MSTR& s, bool localized) const override;
 
 #else
@@ -165,7 +165,7 @@ class GhostTrails : public Modifier, public GTInterface {
 #endif
 
   RefTargetHandle Clone(RemapDir& remap);
-#if MAX_RELEASE >= MAX_RELEASE_R17
+#if MAX_RELEASE_R17
   virtual RefResult NotifyRefChanged(const Interval& changeInt,
                                      RefTargetHandle hTarget, PartID& partID,
                                      RefMessage message, BOOL propagate);
@@ -175,7 +175,7 @@ class GhostTrails : public Modifier, public GTInterface {
 #endif
 
   int NumSubs();
-#if MAX_RELEASE >= MAX_RELEASE_R24
+#if MAX_RELEASE_R24
   TSTR SubAnimName(int i, BOOL isLocalized);
 #else
   TSTR SubAnimName(int i);

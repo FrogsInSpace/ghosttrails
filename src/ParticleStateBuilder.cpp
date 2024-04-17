@@ -3,7 +3,7 @@
 #include <map>
 #include <vector>
 
-#if MAX_RELEASE >= MAX_RELEASE_R14
+#if MAX_RELEASE_R14
 #include "maxscript/foundation/numbers.h"
 #include "maxscript/maxscript.h"
 #include "maxscript/maxwrapper/mxsobjects.h"
@@ -508,7 +508,7 @@ int ParticleStateBuilder::buildParticleSystemState(
   }
 
   LOGIT;
-#if MAX_RELEASE < MAX_RELEASE_R19
+#if !MAX_RELEASE_R19
   pop_value_locals();
 #endif
   LOGIT;

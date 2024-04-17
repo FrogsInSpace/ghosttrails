@@ -22,25 +22,26 @@
 //
 // ---------------------------------------------------------------------------
 
-#if MAX_RELEASE < MAX_RELEASE_R24
-ParticlePositionKey::ParticlePositionKey() : tm(1), time(0), age(0) {}
-#else
+#if MAX_RELEASE_R24
 ParticlePositionKey::ParticlePositionKey() : tm(), time(0), age(0) {}
+
+#else
+ParticlePositionKey::ParticlePositionKey() : tm(1), time(0), age(0) {}
 #endif
 // ---------------------------------------------------------------------------
 
 ParticlePositionKey::ParticlePositionKey(const TimeValue& tim, const Point3& pt,
-                                         const TimeValue& newAge)
-    : time(tim), age(newAge) {
+  const TimeValue& newAge)
+  : time(tim), age(newAge) {
   setPos(pt);
 }
 
 // ---------------------------------------------------------------------------
 
 ParticlePositionKey::ParticlePositionKey(const TimeValue& tim,
-                                         const Matrix3& newTM,
-                                         const TimeValue& newAge)
-    : tm(newTM), time(tim), age(newAge) {}
+  const Matrix3& newTM,
+  const TimeValue& newAge)
+  : tm(newTM), time(tim), age(newAge) {}
 
 // ---------------------------------------------------------------------------
 
@@ -125,7 +126,8 @@ void ParticleState::addKey(const ParticlePositionKey& key) {
   // the range of keys provided
   if (keys_.size() == 1) {
     birthTime_ = deathTime_ = key.getTime();
-  } else {
+  }
+  else {
     if (key.getTime() > deathTime_) deathTime_ = key.getTime();
     if (key.getTime() < birthTime_) birthTime_ = key.getTime();
   }
@@ -170,16 +172,16 @@ void ParticleState::setMtlID(int mtlID) { mtlID_ = mtlID; }
 // ---------------------------------------------------------------------------
 
 ParticleSystemState::ParticleSystemState()
-    : startTime(0),
-      endTime(1),
-      psType(ParticleSystemState::PS_STANDARD),
-      maximumAge(-1),
-      stepTime(40) {}
+  : startTime(0),
+  endTime(1),
+  psType(ParticleSystemState::PS_STANDARD),
+  maximumAge(-1),
+  stepTime(40) {}
 
 // ---------------------------------------------------------------------------
 
 ParticleSystemState::ParticleSystemState(const TimeValue& start,
-                                         const TimeValue& end) {
+  const TimeValue& end) {
   setTimePeriod(start, end);
 }
 
@@ -206,7 +208,7 @@ void ParticleSystemState::setEndTime(const TimeValue& time) {
 // ---------------------------------------------------------------------------
 
 void ParticleSystemState::setTimePeriod(const TimeValue& start,
-                                        const TimeValue& end) {
+  const TimeValue& end) {
   GTASSERT(start < end);
 
   startTime = start;
@@ -275,8 +277,8 @@ void ParticleSystemState::makeTestSpline(std::wstring splineName) {
 
   if (!splShape) {
     DebugPrint(
-        _T("ERROR: ParticleSystemState::makeTestSpline couldn't create spline ")
-        _T("object\n"));
+      _T("ERROR: ParticleSystemState::makeTestSpline couldn't create spline ")
+      _T("object\n"));
     return;
   }
 
@@ -296,7 +298,7 @@ void ParticleSystemState::makeTestSpline(std::wstring splineName) {
 
       // TODO - make spline points (see 3dsimp.cpp)
       SplineKnot knot(KTYPE_AUTO, LTYPE_CURVE, pkey.getPos(), pkey.getPos(),
-                      pkey.getPos());
+        pkey.getPos());
       spline->AddKnot(knot);
     }
     // spline->SetClosed();
@@ -308,7 +310,7 @@ void ParticleSystemState::makeTestSpline(std::wstring splineName) {
   // create the node to put the object in the scene
   INode* splineNode = ip->CreateObjectNode(splShape);
   splineNode->SetName(
-      const_cast<TCHAR*>(static_cast<const TCHAR*>(splineName.data())));
+    const_cast<TCHAR*>(static_cast<const TCHAR*>(splineName.data())));
 }
 
 // ---------------------------------------------------------------------------
@@ -417,9 +419,9 @@ IOResult ParticleSystemState::save(ISave* isave) {
   isave->BeginChunk(PARTICLE_STATE_MTLID_CHUNK);
   if (isave->Write(&numParticles, sizeof(int), &nb) != IO_OK) return IO_ERROR;
   for (int i = 0; i < numParticles; i++) {
-	  ParticleState& partstate = particles[i];
-	  int mtlID = partstate.getMtlID();
-	  if (isave->Write(&mtlID, sizeof(int), &nb) != IO_OK) return IO_ERROR;
+    ParticleState& partstate = particles[i];
+    int mtlID = partstate.getMtlID();
+    if (isave->Write(&mtlID, sizeof(int), &nb) != IO_OK) return IO_ERROR;
   }
   isave->EndChunk();
 
@@ -438,96 +440,96 @@ IOResult ParticleSystemState::load(ILoad* iload) {
 
   while (IO_OK == (res = iload->OpenChunk())) {
     switch (iload->CurChunkID()) {
-      case PARTICLE_STATE_CHUNK: {
-        int dataVersion;
-        if (iload->Read(&dataVersion, sizeof(int), &nb) != IO_OK)
-          return IO_ERROR;
+    case PARTICLE_STATE_CHUNK: {
+      int dataVersion;
+      if (iload->Read(&dataVersion, sizeof(int), &nb) != IO_OK)
+        return IO_ERROR;
 
-        // Got a version we understand?
-        if (dataVersion != requiredVersion) {
-          // No. Just clear and return.
-          clearParticles();
-          iload->CloseChunk();
-          return IO_OK;
+      // Got a version we understand?
+      if (dataVersion != requiredVersion) {
+        // No. Just clear and return.
+        clearParticles();
+        iload->CloseChunk();
+        return IO_OK;
+      }
+
+      if (iload->Read(&startTime, sizeof(TimeValue), &nb) != IO_OK)
+        return IO_ERROR;
+
+      if (iload->Read(&endTime, sizeof(TimeValue), &nb) != IO_OK)
+        return IO_ERROR;
+
+      if (iload->Read(&stepTime, sizeof(TimeValue), &nb) != IO_OK)
+        return IO_ERROR;
+
+      if (iload->Read(&maximumAge, sizeof(TimeValue), &nb) != IO_OK)
+        return IO_ERROR;
+
+      int pstI = 0;
+      if (iload->Read(&pstI, sizeof(int), &nb) != IO_OK) return IO_ERROR;
+      psType = static_cast<ParticleSystemType>(pstI);
+
+      int numParticles = 0;
+      if (iload->Read(&numParticles, sizeof(int), &nb) != IO_OK)
+        return IO_ERROR;
+
+      for (int i = 0; i < numParticles; i++) {
+        ParticleState partstate;
+
+        TimeValue birthTime;
+        if (iload->Read(&birthTime, sizeof(TimeValue), &nb) != IO_OK)
+          return IO_ERROR;
+        partstate.setBirthTime(birthTime);
+
+        TimeValue deathTime;
+        if (iload->Read(&deathTime, sizeof(TimeValue), &nb) != IO_OK)
+          return IO_ERROR;
+        partstate.setDeathTime(deathTime);
+
+        int numKeys;
+        if (iload->Read(&numKeys, sizeof(int), &nb) != IO_OK) return IO_ERROR;
+
+        // read each key for a particle.
+        for (int k = 0; k < numKeys; k++) {
+          Matrix3 tm;
+          if (iload->Read(&tm, sizeof(Matrix3), &nb) != IO_OK)
+            return IO_ERROR;
+
+          TimeValue t;
+          if (iload->Read(&t, sizeof(TimeValue), &nb) != IO_OK)
+            return IO_ERROR;
+
+          TimeValue age;
+          if (iload->Read(&age, sizeof(TimeValue), &nb) != IO_OK)
+            return IO_ERROR;
+
+          partstate.addKey(ParticlePositionKey(t, tm, age));
         }
 
-        if (iload->Read(&startTime, sizeof(TimeValue), &nb) != IO_OK)
-          return IO_ERROR;
+        addParticle(partstate);
+      }
 
-        if (iload->Read(&endTime, sizeof(TimeValue), &nb) != IO_OK)
-          return IO_ERROR;
-
-        if (iload->Read(&stepTime, sizeof(TimeValue), &nb) != IO_OK)
-          return IO_ERROR;
-
-        if (iload->Read(&maximumAge, sizeof(TimeValue), &nb) != IO_OK)
-          return IO_ERROR;
-
-        int pstI = 0;
-        if (iload->Read(&pstI, sizeof(int), &nb) != IO_OK) return IO_ERROR;
-        psType = static_cast<ParticleSystemType>(pstI);
-
-        int numParticles = 0;
-        if (iload->Read(&numParticles, sizeof(int), &nb) != IO_OK)
-          return IO_ERROR;
-
-        for (int i = 0; i < numParticles; i++) {
-          ParticleState partstate;
-
-          TimeValue birthTime;
-          if (iload->Read(&birthTime, sizeof(TimeValue), &nb) != IO_OK)
-            return IO_ERROR;
-          partstate.setBirthTime(birthTime);
-
-          TimeValue deathTime;
-          if (iload->Read(&deathTime, sizeof(TimeValue), &nb) != IO_OK)
-            return IO_ERROR;
-          partstate.setDeathTime(deathTime);
-
-          int numKeys;
-          if (iload->Read(&numKeys, sizeof(int), &nb) != IO_OK) return IO_ERROR;
-
-          // read each key for a particle.
-          for (int k = 0; k < numKeys; k++) {
-            Matrix3 tm;
-            if (iload->Read(&tm, sizeof(Matrix3), &nb) != IO_OK)
-              return IO_ERROR;
-
-            TimeValue t;
-            if (iload->Read(&t, sizeof(TimeValue), &nb) != IO_OK)
-              return IO_ERROR;
-
-            TimeValue age;
-            if (iload->Read(&age, sizeof(TimeValue), &nb) != IO_OK)
-              return IO_ERROR;
-
-            partstate.addKey(ParticlePositionKey(t, tm, age));
-          }
-
-          addParticle(partstate);
-        }
-
-        iload->CloseChunk();
-      } break;
-	  case PARTICLE_STATE_MTLID_CHUNK: {
-		  // Read material IDs for the particles. We should already have read the other
-		  // particle info.
-		  int numParticles = 0;
-		  if (iload->Read(&numParticles, sizeof(int), &nb) != IO_OK)
-			  return IO_ERROR;
-		  if (numParticles != this->numParticles())
-			  return IO_ERROR;
-		  for (int i = 0; i < numParticles; i++) {
-			  ParticleState& partState = getParticle(i);
-			  int mtlID = 0;
-			  if (iload->Read(&mtlID, sizeof(int), &nb) != IO_OK) return IO_ERROR;
-			  partState.setMtlID(mtlID);
-		  }
-		  iload->CloseChunk();
-	  } break;
-      default:
-        iload->CloseChunk();
-        break;
+      iload->CloseChunk();
+    } break;
+    case PARTICLE_STATE_MTLID_CHUNK: {
+      // Read material IDs for the particles. We should already have read the other
+      // particle info.
+      int numParticles = 0;
+      if (iload->Read(&numParticles, sizeof(int), &nb) != IO_OK)
+        return IO_ERROR;
+      if (numParticles != this->numParticles())
+        return IO_ERROR;
+      for (int i = 0; i < numParticles; i++) {
+        ParticleState& partState = getParticle(i);
+        int mtlID = 0;
+        if (iload->Read(&mtlID, sizeof(int), &nb) != IO_OK) return IO_ERROR;
+        partState.setMtlID(mtlID);
+      }
+      iload->CloseChunk();
+    } break;
+    default:
+      iload->CloseChunk();
+      break;
     }
   }
 

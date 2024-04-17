@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+3.7.1.0 (2024-02-24) by Josef 'spacefrog' Wienerroithewr
+-------
+  - 3dsmax 2025 build.
+  - Project cleanup, conversion to propertysheet based configuration
+    ( currently limited to 3ds Max 2017 - 2025 builds).
+
+
 3.7.0.0 (2024-02-24)
 -------
 

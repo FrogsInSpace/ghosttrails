@@ -42,7 +42,7 @@ static INT_PTR CALLBACK AddDlgProc(HWND hWnd, UINT msg, WPARAM wParam,
       SetWindowLongPtr(hWnd, GWLP_USERDATA, lParam);
 
       for (int i = 0; i < mod->pfNodes.Count(); i++) {
-#if MAX_RELEASE >= MAX_RELEASE_R15
+#if MAX_RELEASE_R15
         const MCHAR *name;
 
         name = mod->pfNodes[i]->GetName();
@@ -141,7 +141,7 @@ void GhostTrails::PickPFEvents(HWND hWnd) {
 
         if (epobj) {
           MyEnumProc dep;
-#if MAX_RELEASE >= MAX_RELEASE_R9
+#if MAX_RELEASE_R9
           tos.obj->DoEnumDependents(&dep);
 #else
           tos.obj->EnumDependents(&dep);

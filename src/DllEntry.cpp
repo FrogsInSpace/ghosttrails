@@ -28,7 +28,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, ULONG fdwReason, LPVOID lpvReserved) {
   BOOL bRes = TRUE;
   hInstance = hinstDLL;
 
-#if MAX_RELEASE < MAX_RELEASE_R9
+#if !MAX_RELEASE_R9
   if (!controlsInit) {
     controlsInit = TRUE;
 
