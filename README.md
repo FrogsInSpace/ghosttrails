@@ -1,12 +1,12 @@
 # ghosttrails
 
-This fork of the opriginal GhostTrails repo uses a modified visualstudio project structure and includes the following changes
+This fork of the original GhostTrails repo uses a modified visualstudio project structure and includes the following changes
 + compatibility fixes for 3ds Max 2025+ SDKs
 + usage of Visual Studio propertysheets
-+ references environment variables created during 3ds Max Sdk install
-+ uses internal MAX_RELEASE_xx #define macros for conditional build parameters
++ detection of 3ds Max Sdk locations by referencing the environment variables created during 3ds Max Sdk install ( eg. ADSK_3DSMAX_SDK_2025 )
++ usage of 3ds Max Sdk MAX_RELEASE_xx #define macros for conditional build parameters
 
-Those changes should make future adaptions to new Max Sdk releases a lot easier ( essentially adding the new build target configuration should be enough )
+Those changes should make future adaptions to new Max Sdk releases easier ( essentially adding the new build target configuration should be enough )
 
 Original text:
 
