@@ -71,20 +71,20 @@
       <AdditionalIncludeDirectories>$(MaxSDKPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MAX64;CUSTOM_MFC;WIN32;_WINDOWS;SHELL32LIB;UNICODE;_UNICODE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-			<StringPooling>true</StringPooling>
-			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <DebugInformationFormat>None</DebugInformationFormat>
       <WarningLevel>Level3</WarningLevel>
-			<TreatWarningAsError>false</TreatWarningAsError>
-			<SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0c09</Culture>
-    </ResourceCompile>				
+    </ResourceCompile>
     <Link>
       <AdditionalDependencies>bmm.lib;core.lib;geom.lib;gfx.lib;mesh.lib;maxutil.lib;maxscrpt.lib;paramblk2.lib;particleflow.lib;ParticleFlowTools.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(MaxSDKPath)\lib\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -108,15 +108,15 @@
       <PreprocessorDefinitions>MAX64;CUSTOM_MFC;WIN32;_WINDOWS;SHELL32LIB;UNICODE;_UNICODE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-			<BrowseInformation>true</BrowseInformation>
+      <BrowseInformation>true</BrowseInformation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0c09</Culture>
-    </ResourceCompile>		
+    </ResourceCompile>
     <Link>
-		  <SuppressStartupBanner>true</SuppressStartupBanner>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalDependencies>bmm.lib;core.lib;geom.lib;gfx.lib;mesh.lib;maxutil.lib;maxscrpt.lib;paramblk2.lib;particleflow.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(MaxSDKPath)\lib\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>.\GhostTrails.def</ModuleDefinitionFile>
@@ -124,7 +124,7 @@
       <TargetMachine>MachineX64</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-			<SetChecksum>true</SetChecksum>
+      <SetChecksum>true</SetChecksum>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <!-- Clear private debug symbol setting that gets set by Max SDK's property sheet -->
       <StripPrivateSymbols>
@@ -146,10 +146,9 @@
     <ClInclude Include="src/resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\bitmap2.bmp" />
-    <None Include="res\tire1.jpg" />
-    <None Include="res\tire1_100x35.bmp" />
-    <None Include="res\trails_bgthin.bmp" />
+    <None Include="src/res/tire1.jpg" />
+    <None Include="src/res/tire1_100x35.bmp" />
+    <None Include="src/res/trails_bgthin.bmp" />
     <None Include="GhostTrails.def" />
     <None Include="changeLog.txt" />
   </ItemGroup>

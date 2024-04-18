@@ -31,16 +31,13 @@
   <ItemGroup>
     <None Include="GhostTrails.def" />
     <None Include="changeLog.txt" />
-    <None Include="res\bitmap2.bmp">
+    <None Include="src/res/tire1.jpg">
       <Filter>res</Filter>
     </None>
-    <None Include="res\tire1_100x35.bmp">
+    <None Include="src/res/tire1_100x35.bmp">
       <Filter>res</Filter>
     </None>
-    <None Include="res\trails_bgthin.bmp">
-      <Filter>res</Filter>
-    </None>
-    <None Include="res\tire1.jpg">
+    <None Include="src/res/trails_bgthin.bmp">
       <Filter>res</Filter>
     </None>
   </ItemGroup>
