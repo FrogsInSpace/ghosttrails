@@ -2,7 +2,7 @@
 
 This FORK of the opriginal GhostTrails repo uses a heavily modified visualstudio project setup and fixes compatibility for 3ds Max 2025+ SDKs
 The project now makes use of propertysheets, 3ds Max SDK's environment variables and internal MAX_RELEASE_xx #define macros
-This should make adaptions for future Max SDK releases a lot easier than before ( essentially only a few project configurations should have to be added to the .sln/.vcxproj files
+This should make adaptions for future Max SDK releases a lot easier than before ( essentially only a few project configurations should have to be added to the .sln/.vcxproj files )
 
 Original text:
 
