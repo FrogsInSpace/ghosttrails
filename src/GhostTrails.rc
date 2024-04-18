@@ -41,7 +41,7 @@ BEGIN
     CONTROL         "",IDC_MAIN_FRAMES_SPIN,"SpinnerControl",0x0,93,68,7,10
     CONTROL         "",IDC_MAIN_STARTFRAME_SPIN,"SpinnerControl",0x0,93,111,7,10
     CONTROL         "",IDC_MAIN_ENDFRAME_SPIN,"SpinnerControl",0x0,93,123,7,10
-    CTEXT           "GhostTrails 3.70",IDC_STATIC,7,7,94,9
+    CTEXT           "GhostTrails 3.80",IDC_STATIC,7,7,94,9
     CTEXT           "Free Version",IDC_MAIN_LICTEXT,7,39,94,10
     CONTROL         "Enable Debug Logging",IDC_ENABLE_LOGGING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,139,89,10
 END
@@ -169,8 +169,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,7,1,0
- PRODUCTVERSION 3,7,1,0
+ FILEVERSION 3,8,0,0
+ PRODUCTVERSION 3,8,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -188,12 +188,12 @@ BEGIN
             VALUE "Comments", "GhostTrails ghosting modifier for 3dsmax"
             VALUE "CompanyName", "http://www.ghosttrails.net"
             VALUE "FileDescription", "GhostTrails"
-            VALUE "FileVersion", "3.7.1.0"
+            VALUE "FileVersion", "3.8.0.0"
             VALUE "InternalName", "GhostTrails"
             VALUE "LegalCopyright", "Copyright 2000-2024 Andrew Reid"
             VALUE "OriginalFilename", "GhostTrails.dlm"
             VALUE "ProductName", "GhostTrails"
-            VALUE "ProductVersion", "3.7.1.0"
+            VALUE "ProductVersion", "3.8.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -309,7 +309,7 @@ CAPTION "About GhostTrails"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,103,165,50,14
-    CTEXT           "Version 3.71",IDC_STATIC,7,75,243,10
+    CTEXT           "Version 3.80",IDC_STATIC,7,75,243,10
     CTEXT           "Written by Andrew Reid (andrew.k.reid@gmail.com), Anthony Cassidy, and Co.\n",IDC_STATIC,7,137,243,21
     CONTROL         IDB_BITMAP2,IDC_STATIC,"Static",SS_BITMAP | SS_CENTERIMAGE | SS_REALSIZEIMAGE,7,7,243,67
     CTEXT           "",IDC_ABOUT_LICTEXT,7,90,243,24
