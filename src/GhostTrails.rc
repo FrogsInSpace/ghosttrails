@@ -287,15 +287,10 @@ BEGIN
     IDS_USE_PFLOW_MTLIDS    "Use PFlow Material IDs"
 END
 
-#endif    // English (United States) resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
-// English (Australia) resources
+#endif    
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENA)
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_AUS
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 
 /////////////////////////////////////////////////////////////////////////////
@@ -461,8 +456,9 @@ IDB_GTLOGO              BITMAP                  "res\\trails_bgthin.bmp"
 
 IDR_IMAGE1              IMAGE                   "res\\tire1.jpg"
 
-#endif    // English (Australia) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
+
 
 
 
