@@ -6,53 +6,58 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Max2025 - Hybrid|x64">
-      <Configuration>Max2025 - Hybrid</Configuration>
+    <ProjectConfiguration Include="Hybrid - Max2025|x64">
+      <Configuration>Hybrid - Max2025</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Max2025 - Release|x64">
-      <Configuration>Max2025 - Release</Configuration>
+    <ProjectConfiguration Include="Release - Max2026|x64">
+      <Configuration>Release - Max2026</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Max2024 - Release|x64">
-      <Configuration>Max2024 - Release</Configuration>
+    <ProjectConfiguration Include="Release - Max2025|x64">
+      <Configuration>Release - Max2025</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Max2023 - Release|x64">
-      <Configuration>Max2023 - Release</Configuration>
+    <ProjectConfiguration Include="Release - Max2024|x64">
+      <Configuration>Release - Max2024</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Max2022 - Release|x64">
-      <Configuration>Max2022 - Release</Configuration>
+    <ProjectConfiguration Include="Release - Max2023|x64">
+      <Configuration>Release - Max2023</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Max2021 - Release|x64">
-      <Configuration>Max2021 - Release</Configuration>
+    <ProjectConfiguration Include="Release - Max2022|x64">
+      <Configuration>Release - Max2022</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Max2020 - Release|x64">
-      <Configuration>Max2020 - Release</Configuration>
+    <ProjectConfiguration Include="Release - Max2021|x64">
+      <Configuration>Release - Max2021</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Max2019 - Release|x64">
-      <Configuration>Max2019 - Release</Configuration>
+    <ProjectConfiguration Include="Release - Max2020|x64">
+      <Configuration>Release - Max2020</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Max2018 - Release|x64">
-      <Configuration>Max2018 - Release</Configuration>
+    <ProjectConfiguration Include="Release - Max2019|x64">
+      <Configuration>Release - Max2019</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Max2017 - Release|x64">
-      <Configuration>Max2017 - Release</Configuration>
+    <ProjectConfiguration Include="Release - Max2018|x64">
+      <Configuration>Release - Max2018</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release - Max2017|x64">
+      <Configuration>Release - Max2017</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <ImportGroup Label="PropertySheets">
     <Import Project="$(ProjectDir)propertysheets\MaxSDKSetup.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(MaxSDKPath)\ProjectSettings\propertySheets\3dsmax.cpp.props" />
   </ImportGroup>
   <PropertyGroup>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
