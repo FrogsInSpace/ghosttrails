@@ -88,7 +88,6 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0c09</Culture>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>bmm.lib;core.lib;geom.lib;gfx.lib;mesh.lib;maxutil.lib;maxscrpt.lib;paramblk2.lib;particleflow.lib;ParticleFlowTools.lib;%(AdditionalDependencies)</AdditionalDependencies>
