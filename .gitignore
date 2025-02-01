@@ -1,8 +1,12 @@
+.vs/
 *.suo
+*.log
+Debug/*
+Release/
+Releases/
+obj/
 x64/
 *.aps
 ipch/
 *.sdf
-.vs/
 RCa12100
-Releases/
