@@ -159,19 +159,15 @@ class GhostTrails : public Modifier, public GTInterface {
   SClass_ID SuperClassID();
 #if MAX_RELEASE_R24
   void GetClassName(MSTR& s, bool localized) const override;
-
 #else
   void GetClassName(TSTR& s);
 #endif
 
   RefTargetHandle Clone(RemapDir& remap);
 #if MAX_RELEASE_R17
-  virtual RefResult NotifyRefChanged(const Interval& changeInt,
-                                     RefTargetHandle hTarget, PartID& partID,
-                                     RefMessage message, BOOL propagate);
+  virtual RefResult NotifyRefChanged(const Interval& changeInt,RefTargetHandle hTarget, PartID& partID, RefMessage message, BOOL propagate);
 #else
-  RefResult NotifyRefChanged(Interval changeInt, RefTargetHandle hTarget,
-                             PartID& partID, RefMessage message);
+  RefResult NotifyRefChanged(Interval changeInt, RefTargetHandle hTarget, PartID& partID, RefMessage message);
 #endif
 
   int NumSubs();

@@ -77,7 +77,7 @@ public:
   }
   const TCHAR* ClassName() { return GetString(IDS_CLASS_NAME); }
 #if MAX_RELEASE_R24
-  const TCHAR* NonLocalizedClassName() { return _T("GhostTrails"); }
+  const TCHAR* NonLocalizedClassName() { return ClassName(); }
 #endif
   SClass_ID SuperClassID() { return OSM_CLASS_ID; }
   Class_ID ClassID() { return GHOSTTRAILS_CLASS_ID; }
